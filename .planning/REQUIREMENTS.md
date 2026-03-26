@@ -88,14 +88,14 @@ Explicitly excluded. Documented to prevent scope creep.
 
 | Feature | Reason |
 |---------|--------|
-| Contact form | Spam magnet, needs backend — email link is sufficient |
-| CMS / admin panel | Over-engineering for <20 content items — markdown in repo |
-| Dark/light mode toggle | Dark theme IS the brand — commit to it |
-| Blog comments | Requires moderation/backend — link to LinkedIn discussions |
-| Chatbot / AI assistant | Gimmicky on a personal site — content speaks for itself |
-| Heavy animations (GSAP, parallax) | Annoys leadership audience — subtle CSS transitions only |
-| Skill bars / percentage ratings | Meaningless and cringe — projects demonstrate skill |
-| Testimonials section | Hard to avoid looking self-promotional — LinkedIn handles this |
+| Contact form | Spam magnet, needs backend -- email link is sufficient |
+| CMS / admin panel | Over-engineering for <20 content items -- markdown in repo |
+| Dark/light mode toggle | Dark theme IS the brand -- commit to it |
+| Blog comments | Requires moderation/backend -- link to LinkedIn discussions |
+| Chatbot / AI assistant | Gimmicky on a personal site -- content speaks for itself |
+| Heavy animations (GSAP, parallax) | Annoys leadership audience -- subtle CSS transitions only |
+| Skill bars / percentage ratings | Meaningless and cringe -- projects demonstrate skill |
+| Testimonials section | Hard to avoid looking self-promotional -- LinkedIn handles this |
 | Authentication | No gated content needed |
 | Mobile app | Web only |
 
@@ -105,13 +105,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmapper) | | |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Pending |
+| INFRA-07 | Phase 1 | Pending |
+| INFRA-08 | Phase 1 | Pending |
+| LAYOUT-01 | Phase 2 | Pending |
+| LAYOUT-02 | Phase 2 | Pending |
+| LAYOUT-03 | Phase 2 | Pending |
+| LAYOUT-04 | Phase 2 | Pending |
+| COMP-01 | Phase 2 | Pending |
+| COMP-02 | Phase 2 | Pending |
+| COMP-03 | Phase 2 | Pending |
+| HERO-01 | Phase 2 | Pending |
+| HERO-02 | Phase 2 | Pending |
+| HERO-03 | Phase 2 | Pending |
+| ABOUT-01 | Phase 2 | Pending |
+| ABOUT-02 | Phase 2 | Pending |
+| PROJ-01 | Phase 2 | Pending |
+| PROJ-02 | Phase 2 | Pending |
+| PROJ-03 | Phase 2 | Pending |
+| CAREER-01 | Phase 2 | Pending |
+| CAREER-02 | Phase 2 | Pending |
+| WRITE-01 | Phase 2 | Pending |
+| WRITE-02 | Phase 2 | Pending |
+| WRITE-03 | Phase 2 | Pending |
+| CONTACT-01 | Phase 2 | Pending |
+| CONTACT-02 | Phase 2 | Pending |
+| SEO-01 | Phase 3 | Pending |
+| SEO-02 | Phase 3 | Pending |
+| SEO-03 | Phase 3 | Pending |
 
 **Coverage:**
-- v1 requirements: 25 total
-- Mapped to phases: 0
-- Unmapped: 25 (pending roadmap)
+- v1 requirements: 33 total
+- Mapped to phases: 33
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-26 after initial definition*
+*Last updated: 2026-03-26 after roadmap creation*
