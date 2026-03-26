@@ -29,6 +29,17 @@ created: 2026-03-26
 
 ---
 
+## Visual Hierarchy
+
+| Priority | Element | Treatment |
+|----------|---------|-----------|
+| Primary focal point | Display heading "Russell Moore" (text-4xl, 36px, bold 700) | Largest text on page, first element in viewport. Anchors visitor attention on identity. |
+| Secondary anchor | Projects section | Card-based listing with accent-colored tech tags. Provides immediate proof of work below the fold. |
+
+**Source:** RESEARCH.md Pattern 6 (Minimal Index Page), REQUIREMENTS.md proof-of-concept page scope.
+
+---
+
 ## Spacing Scale
 
 Declared values (must be multiples of 4):
@@ -43,7 +54,7 @@ Declared values (must be multiples of 4):
 | 2xl | 48px | Major section breaks |
 | 3xl | 96px | Page-level vertical padding (py-24 in Tailwind = 96px) |
 
-Exceptions: none
+Exceptions: 96px (3xl) -- Page-level vertical padding. Generous whitespace per linear.app/vercel.com design energy. Multiple of 4, grid-safe. Not in the standard spacing set (4, 8, 16, 24, 32, 48, 64) but justified by the dark-theme aesthetic requiring more breathing room between major page sections.
 
 **Source:** Default 8-point scale. RESEARCH.md code examples use px-6 (24px), py-24 (96px), mt-4 (16px), mt-16 (64px), gap-2 (8px) which align with this scale. The 3xl token is 96px (not 64px) to match the actual py-24 usage in the proof-of-concept page.
 
@@ -60,9 +71,9 @@ Exceptions: none
 
 Font stack (declared in @theme): `"Geist Variable", "Inter", system-ui, sans-serif`
 
-Weights used: 400 (regular) and 600 (semibold) as primary pair. 700 (bold) reserved for the single display heading only.
+Weights used: 400 (regular) and 600 (semibold) as primary pair. 700 (bold) is a single-element exception reserved exclusively for the display heading ("Russell Moore" at text-4xl). This third weight is justified because the display heading must visually separate from section headings (semibold 600) -- at 36px, the weight difference between 600 and 700 is perceptible and establishes clear hierarchy. No other element uses 700.
 
-**Source:** CONTEXT.md D-10, D-11. Sizes derived from RESEARCH.md code examples (text-4xl, text-2xl, text-lg, text-sm). Formalized to 4 roles with 2 primary weights.
+**Source:** CONTEXT.md D-10, D-11. Sizes derived from RESEARCH.md code examples (text-4xl, text-2xl, text-lg, text-sm). Formalized to 4 roles with 2 primary weights + 1 declared exception.
 
 ---
 
