@@ -90,3 +90,13 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 Plans:
 - [x] 04-01-PLAN.md -- Create reusable TimelineBar and MilestoneNode components for horizontal accomplishment timelines
 - [ ] 04-02-PLAN.md -- Rewrite Career.astro with correct resume data for 4 companies and wire in timeline components
+
+### Phase 5: Writing/blog system with individual post pages, writing index page, and homepage latest posts section
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 4
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 5 to break down)
