@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from "astro:content";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  const sorted = projects.sort((a, b) => a.data.order - b.data.order);
+
+  return sorted.map((project, index) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      prevProject: index > 0 ? sorted[index - 1] : null,
+      nextProject: index < sorted.length - 1 ? sorted[index + 1] : null,
+    },
+  }));
+}
+
+const { project, prevProject, nextProject } = Astro.props;
+const { Content } = await render(project);
+---
+
+<ProjectLayout frontmatter={project.data}>
+  <Content />
+
+  <!-- Prev/Next navigation -->
+  <nav class="mt-12 flex items-center justify-between border-t border-white/10 pt-8 not-prose">
+    <div>
+      {prevProject && (
+        <a
+          href={`/projects/${prevProject.id}`}
+          class="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
+        >
+          <span aria-hidden="true" class="transition-transform group-hover:-translate-x-0.5">&larr;</span>
+          <span>{prevProject.data.title}</span>
+        </a>
+      )}
+    </div>
+    <div>
+      {nextProject && (
+        <a
+          href={`/projects/${nextProject.id}`}
+          class="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
+        >
+          <span>{nextProject.data.title}</span>
+          <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
+        </a>
+      )}
+    </div>
+  </nav>
+</ProjectLayout>
