@@ -1,0 +1,121 @@
+---
+import Layout from "./Layout.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    stack: string[];
+    status: string;
+    url?: string;
+    github?: string;
+    images?: string[];
+  };
+}
+
+const { frontmatter } = Astro.props;
+
+const statusStyles: Record<string, string> = {
+  Live: "bg-accent/20 text-accent",
+  "In Development": "bg-yellow-500/20 text-yellow-400",
+  Archived: "bg-white/10 text-muted",
+};
+
+const badgeClass = statusStyles[frontmatter.status] ?? "bg-white/10 text-muted";
+---
+
+<Layout
+  title={`${frontmatter.title} | Russell Moore`}
+  description={frontmatter.description}
+  ogType="article"
+>
+  <!-- Full-width hero gradient -->
+  <div class="w-full bg-gradient-to-b from-[rgba(124,58,237,0.08)] to-transparent">
+    <div class="mx-auto max-w-3xl px-6 pb-8 pt-32">
+      <a
+        href="/#projects"
+        class="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-foreground"
+      >
+        <span aria-hidden="true">&larr;</span> Back to Projects
+      </a>
+    </div>
+  </div>
+
+  <!-- Centered content column -->
+  <div class="mx-auto max-w-3xl px-6">
+    <!-- Project header -->
+    <header class="mb-10">
+      <div class="flex items-center gap-3">
+        <h1 class="text-4xl font-bold text-foreground md:text-5xl">
+          {frontmatter.title}
+        </h1>
+        <span class={`inline-flex shrink-0 items-center rounded px-2 py-0.5 text-xs font-medium ${badgeClass}`}>
+          {frontmatter.status}
+        </span>
+      </div>
+
+      <!-- Tech stack tags -->
+      {frontmatter.stack.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {frontmatter.stack.map((tech) => (
+            <span class="inline-flex items-center rounded bg-accent/20 px-2 py-0.5 text-xs font-medium text-accent">
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <!-- External links -->
+      <div class="mt-4 flex items-center gap-4">
+        {frontmatter.url && (
+          <a
+            href={frontmatter.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 text-sm text-accent transition-colors hover:text-accent-hover"
+          >
+            Visit project <Icon name="lucide:external-link" class="size-3.5" />
+          </a>
+        )}
+        {frontmatter.github && (
+          <a
+            href={frontmatter.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
+            aria-label={`${frontmatter.title} on GitHub`}
+          >
+            <Icon name="lucide:github" class="size-4" />
+            Source
+          </a>
+        )}
+      </div>
+    </header>
+
+    <!-- Article body with prose styling -->
+    <article class="prose prose-invert prose-lg max-w-none">
+      <slot />
+    </article>
+
+    <!-- Optional screenshots section -->
+    {frontmatter.images && frontmatter.images.length > 0 && (
+      <section class="mt-16 not-prose">
+        <h2 class="mb-6 text-xl font-semibold text-foreground">Screenshots</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          {frontmatter.images.map((src) => (
+            <img
+              src={src}
+              alt={`${frontmatter.title} screenshot`}
+              class="rounded-lg border border-white/10"
+              loading="lazy"
+            />
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+
+  <!-- Bottom spacing -->
+  <div class="h-24"></div>
+</Layout>
