@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from "astro:content";
+import PostLayout from "../../layouts/PostLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing", ({ data }) => !data.draft);
+  const sortedPosts = posts.sort(
+    (a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+  );
+
+  return sortedPosts.map((post, index) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      prevPost: index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null,
+      nextPost: index > 0 ? sortedPosts[index - 1] : null,
+    },
+  }));
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+const { Content } = await render(post);
+---
+
+<PostLayout frontmatter={post.data}>
+  <Content />
+
+  <!-- Prev/Next navigation -->
+  <nav class="mt-16 flex items-center justify-between border-t border-white/10 pt-8 not-prose">
+    <div>
+      {prevPost && (
+        <a
+          href={`/writing/${prevPost.id}`}
+          class="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
+        >
+          <span aria-hidden="true" class="transition-transform group-hover:-translate-x-0.5">&larr;</span>
+          <span>{prevPost.data.title}</span>
+        </a>
+      )}
+    </div>
+    <div>
+      {nextPost && (
+        <a
+          href={`/writing/${nextPost.id}`}
+          class="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
+        >
+          <span>{nextPost.data.title}</span>
+          <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
+        </a>
+      )}
+    </div>
+  </nav>
+</PostLayout>
