@@ -44,20 +44,20 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Projects
 
-- [ ] **PROJ-01**: Card grid displaying projects from content collection
-- [ ] **PROJ-02**: Each project card shows title, description, tech stack tags (Badge), and status badge (Live / In Development)
-- [ ] **PROJ-03**: Featured projects visually distinguished or prioritized in display order
+- [x] **PROJ-01**: Card grid displaying projects from content collection
+- [x] **PROJ-02**: Each project card shows title, description, tech stack tags (Badge), and status badge (Live / In Development)
+- [x] **PROJ-03**: Featured projects visually distinguished or prioritized in display order
 
 ### Career
 
-- [ ] **CAREER-01**: 3 highlight cards for AT&T, Spark::red, and Pivotree
-- [ ] **CAREER-02**: Each card shows company name, role context, and key quantified metrics
+- [x] **CAREER-01**: 3 highlight cards for AT&T, Spark::red, and Pivotree
+- [x] **CAREER-02**: Each card shows company name, role context, and key quantified metrics
 
 ### Writing
 
-- [ ] **WRITE-01**: Card grid displaying published writing from content collection
-- [ ] **WRITE-02**: Graceful "coming soon" state when no published posts exist (all drafts filtered out)
-- [ ] **WRITE-03**: Draft entries (draft:true) never render on the site
+- [x] **WRITE-01**: Card grid displaying published writing from content collection
+- [x] **WRITE-02**: Graceful "coming soon" state when no published posts exist (all drafts filtered out)
+- [x] **WRITE-03**: Draft entries (draft:true) never render on the site
 
 ### Contact
 
@@ -125,14 +125,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HERO-03 | Phase 2 | Pending |
 | ABOUT-01 | Phase 2 | Pending |
 | ABOUT-02 | Phase 2 | Pending |
-| PROJ-01 | Phase 2 | Pending |
-| PROJ-02 | Phase 2 | Pending |
-| PROJ-03 | Phase 2 | Pending |
-| CAREER-01 | Phase 2 | Pending |
-| CAREER-02 | Phase 2 | Pending |
-| WRITE-01 | Phase 2 | Pending |
-| WRITE-02 | Phase 2 | Pending |
-| WRITE-03 | Phase 2 | Pending |
+| PROJ-01 | Phase 2 | Complete |
+| PROJ-02 | Phase 2 | Complete |
+| PROJ-03 | Phase 2 | Complete |
+| CAREER-01 | Phase 2 | Complete |
+| CAREER-02 | Phase 2 | Complete |
+| WRITE-01 | Phase 2 | Complete |
+| WRITE-02 | Phase 2 | Complete |
+| WRITE-03 | Phase 2 | Complete |
 | CONTACT-01 | Phase 2 | Pending |
 | CONTACT-02 | Phase 2 | Pending |
 | SEO-01 | Phase 3 | Pending |
