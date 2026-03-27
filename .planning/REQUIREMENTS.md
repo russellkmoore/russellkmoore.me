@@ -33,14 +33,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Hero
 
-- [ ] **HERO-01**: Hero displays name and tagline (tech leadership angle)
-- [ ] **HERO-02**: Two CTA buttons: "See My Work" anchors to Projects, "Let's Talk" anchors to Contact
-- [ ] **HERO-03**: Subtle animated gradient background (performant, not flashy)
+- [x] **HERO-01**: Hero displays name and tagline (tech leadership angle)
+- [x] **HERO-02**: Two CTA buttons: "See My Work" anchors to Projects, "Let's Talk" anchors to Contact
+- [x] **HERO-03**: Subtle animated gradient background (performant, not flashy)
 
 ### About
 
-- [ ] **ABOUT-01**: Short narrative paragraph about Russell
-- [ ] **ABOUT-02**: 4 stats cards displaying: 20+ Years, $2B+ Platform Scale, $13M ARR Built & Acquired, 200+ Global Team
+- [x] **ABOUT-01**: Short narrative paragraph about Russell
+- [x] **ABOUT-02**: 4 stats cards displaying: 20+ Years, $2B+ Platform Scale, $13M ARR Built & Acquired, 200+ Global Team
 
 ### Projects
 
@@ -61,8 +61,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Contact
 
-- [ ] **CONTACT-01**: Email link and LinkedIn link displayed
-- [ ] **CONTACT-02**: Brief "what I'm open to" copy (full-time roles, consulting, advising, interesting conversations)
+- [x] **CONTACT-01**: Email link and LinkedIn link displayed
+- [x] **CONTACT-02**: Brief "what I'm open to" copy (full-time roles, consulting, advising, interesting conversations)
 
 ### SEO
 
@@ -120,11 +120,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COMP-01 | Phase 2 | Complete |
 | COMP-02 | Phase 2 | Complete |
 | COMP-03 | Phase 2 | Complete |
-| HERO-01 | Phase 2 | Pending |
-| HERO-02 | Phase 2 | Pending |
-| HERO-03 | Phase 2 | Pending |
-| ABOUT-01 | Phase 2 | Pending |
-| ABOUT-02 | Phase 2 | Pending |
+| HERO-01 | Phase 2 | Complete |
+| HERO-02 | Phase 2 | Complete |
+| HERO-03 | Phase 2 | Complete |
+| ABOUT-01 | Phase 2 | Complete |
+| ABOUT-02 | Phase 2 | Complete |
 | PROJ-01 | Phase 2 | Pending |
 | PROJ-02 | Phase 2 | Pending |
 | PROJ-03 | Phase 2 | Pending |
@@ -133,8 +133,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WRITE-01 | Phase 2 | Pending |
 | WRITE-02 | Phase 2 | Pending |
 | WRITE-03 | Phase 2 | Pending |
-| CONTACT-01 | Phase 2 | Pending |
-| CONTACT-02 | Phase 2 | Pending |
+| CONTACT-01 | Phase 2 | Complete |
+| CONTACT-02 | Phase 2 | Complete |
 | SEO-01 | Phase 3 | Pending |
 | SEO-02 | Phase 3 | Pending |
 | SEO-03 | Phase 3 | Pending |

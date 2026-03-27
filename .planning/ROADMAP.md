@@ -49,7 +49,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md -- Install astro-icon, create reusable components (Card, Badge, SectionHeader), build Nav with mobile menu, Footer, and update Layout
-- [ ] 02-02-PLAN.md -- Hero section with mesh gradient and CTAs, About section with narrative and stats, Contact section with links
+- [x] 02-02-PLAN.md -- Hero section with mesh gradient and CTAs, About section with narrative and stats, Contact section with links
 - [ ] 02-03-PLAN.md -- Projects section from content collections, Career timeline, Writing section with coming-soon state
 - [ ] 02-04-PLAN.md -- Compose index.astro with all sections and visual verification checkpoint
 
@@ -75,5 +75,5 @@ Phases execute in numeric order: 1 -> 2 -> 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Scaffolding | 2/2 | Complete | 2026-03-27 |
-| 2. Components & Content | 1/4 | In Progress|  |
+| 2. Components & Content | 2/4 | In Progress|  |
 | 3. Polish & Production | 0/1 | Not started | - |
