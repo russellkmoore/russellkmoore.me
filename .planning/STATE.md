@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-03-27T20:12:43.081Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-03-27T20:18:27.564Z"
 last_activity: 2026-03-27
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 15
-  completed_plans: 14
+  completed_plans: 15
   percent: 0
 ---
 
@@ -62,6 +62,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05 P01 | 3min | 2 tasks | 6 files |
 | Phase 05 P03 | 2min | 2 tasks | 2 files |
 | Phase 06-project-detail-pages P01 | 2min | 2 tasks | 4 files |
+| Phase 06-project-detail-pages P02 | 4min | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,7 @@ Recent decisions affecting current work:
 - [Phase 05]: Vertical list layout for /writing index, 3-column grid for homepage writing section
 - [Phase 06-project-detail-pages]: ProjectLayout follows PostLayout pattern for consistency
 - [Phase 06-project-detail-pages]: Back link points to /#projects (homepage anchor) not a separate /projects index
+- [Phase 06-project-detail-pages]: Featured projects get 5-section case studies; non-featured get 3-section detail pages
 
 ### Roadmap Evolution
 
@@ -111,6 +113,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T20:12:43.079Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-03-27T20:18:27.562Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None
