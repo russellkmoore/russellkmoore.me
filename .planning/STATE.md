@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-27T12:15:45.460Z"
-last_activity: 2026-03-27 -- Phase 05 execution started
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-27T12:23:56.139Z"
+last_activity: 2026-03-27
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 13
-  completed_plans: 10
+  completed_plans: 12
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** Visitors immediately understand Russell's expertise and can see tangible proof of what he's built.
-**Current focus:** Phase 05 — writing-blog-system
+**Current focus:** Phase 04 — career-timelines
 
 ## Current Position
 
-Phase: 05 (writing-blog-system) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 05
-Last activity: 2026-03-27 -- Phase 05 execution started
+Phase: 05
+Plan: Not started
+Status: Ready to execute
+Last activity: 2026-03-27
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -59,6 +59,8 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-components-content P04 | 2min | 2 tasks | 1 files |
 | Phase 03-polish-production P02 | 5min | 2 tasks | 6 files |
 | Phase 04 P02 | 15min | 2 tasks | 11 files |
+| Phase 05 P01 | 3min | 2 tasks | 6 files |
+| Phase 05 P02 | 2min | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -84,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Switched to JS fixed-position tooltips for timeline milestones (CSS approach had overflow clipping)
 - [Phase 04]: Added Cloudflare Speaker 2015 and B2B Greenfield 2023 milestones per user feedback
 - [Phase 04]: Expanded company descriptions with full resume content and added GitHub links to project cards
+- [Phase 05]: Used @astrojs/mdx v4.3.14 (not v5) for Astro 5 compatibility
+- [Phase 05]: Prose color overrides in global.css custom properties, not Tailwind config
+- [Phase 05]: Used [...slug] rest/spread route for future nested path support
 
 ### Pending Todos
 
@@ -99,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T11:56:21.051Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-writing-blog-system-with-individual-post-pages-writing-index-page-and-homepage-latest-posts-section/05-CONTEXT.md
+Last session: 2026-03-27T12:23:56.137Z
+Stopped at: Completed 05-02-PLAN.md
+Resume file: None

@@ -79,7 +79,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Components & Content | 2/4 | In Progress|  |
 | 3. Polish & Production | 2/2 | Complete   | 2026-03-27 |
 | 4. Career Timelines | 2/2 | Complete   | 2026-03-27 |
-| 5. Writing/Blog System | 0/3 | Ready      |  |
+| 5. Writing/Blog System | 2/3 | In Progress|  |
 
 ### Phase 4: Career timelines with researched accomplishments and graphical timeline components for AT&T, Spark::red, and Pivotree
 
@@ -97,9 +97,9 @@ Plans:
 **Goal:** Full MDX-powered blog with individual post pages at /writing/[slug], a /writing index page, and homepage section showing latest 3 posts -- all with syntax-highlighted code blocks and dark-themed prose typography
 **Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 4
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 05-01-PLAN.md -- Install MDX + typography, configure Shiki syntax highlighting, create PostLayout and PostCard components
-- [ ] 05-02-PLAN.md -- Create dynamic post route at /writing/[slug] and publish one test post
+- [x] 05-02-PLAN.md -- Create dynamic post route at /writing/[slug] and publish one test post
 - [ ] 05-03-PLAN.md -- Create /writing index page and update homepage Writing section with latest 3 posts
