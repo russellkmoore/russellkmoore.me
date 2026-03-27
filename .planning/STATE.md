@@ -90,6 +90,10 @@ Recent decisions affecting current work:
 - [Phase 05]: Prose color overrides in global.css custom properties, not Tailwind config
 - [Phase 05]: Vertical list layout for /writing index, 3-column grid for homepage writing section
 
+### Roadmap Evolution
+
+- Phase 6 added: Project detail pages
+
 ### Pending Todos
 
 None yet.

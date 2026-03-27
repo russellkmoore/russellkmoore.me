@@ -103,3 +103,13 @@ Plans:
 - [x] 05-01-PLAN.md -- Install MDX + typography, configure Shiki syntax highlighting, create PostLayout and PostCard components
 - [ ] 05-02-PLAN.md -- Create dynamic post route at /writing/[slug] and publish one test post
 - [x] 05-03-PLAN.md -- Create /writing index page and update homepage Writing section with latest 3 posts
+
+### Phase 6: Project detail pages
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 5
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
