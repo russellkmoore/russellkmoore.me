@@ -27,7 +27,7 @@ const links = [
       ))}
     </div>
 
-    <button id="menu-toggle" class="md:hidden" aria-label="Toggle menu">
+    <button id="menu-toggle" class="md:hidden" aria-label="Toggle menu" aria-expanded="false">
       <Icon name="lucide:menu" class="size-6 text-foreground" />
     </button>
   </div>
@@ -91,18 +91,27 @@ const links = [
   function openMenu() {
     menu?.classList.remove("translate-x-full");
     menu?.classList.add("translate-x-0");
+    toggle?.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
   }
 
   function closeMenu() {
     menu?.classList.remove("translate-x-0");
     menu?.classList.add("translate-x-full");
+    toggle?.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
   }
 
   toggle?.addEventListener("click", openMenu);
   close?.addEventListener("click", closeMenu);
   backdrop?.addEventListener("click", closeMenu);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menu?.classList.contains("translate-x-0")) {
+      closeMenu();
+      toggle?.focus();
+    }
+  });
 
   menu?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMenu);
