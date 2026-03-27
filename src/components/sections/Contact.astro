@@ -1,0 +1,45 @@
+---
+import { Icon } from "astro-icon/components";
+import SectionHeader from "../SectionHeader.astro";
+---
+
+<section id="contact" class="py-24">
+  <div class="mx-auto max-w-4xl px-6 text-center">
+    <SectionHeader title="Let's Connect" />
+
+    <!-- What I'm open to (CONTACT-02) -->
+    <p class="mx-auto max-w-2xl text-lg text-muted">
+      I'm open to full-time engineering leadership roles, consulting
+      engagements, advisory positions, and interesting conversations about AI and
+      commerce.
+    </p>
+
+    <!-- Links (CONTACT-01) -->
+    <div class="mt-8 flex items-center justify-center gap-6">
+      <a
+        href="mailto:russell@russellkmoore.me"
+        class="group inline-flex items-center gap-2 text-foreground transition-colors hover:text-accent"
+      >
+        <Icon name="lucide:mail" class="size-5" />
+        Email
+        <Icon
+          name="lucide:arrow-right"
+          class="size-4 transition-transform group-hover:translate-x-1"
+        />
+      </a>
+      <a
+        href="https://linkedin.com/in/russellkmoore"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group inline-flex items-center gap-2 text-foreground transition-colors hover:text-accent"
+      >
+        <Icon name="lucide:linkedin" class="size-5" />
+        LinkedIn
+        <Icon
+          name="lucide:arrow-right"
+          class="size-4 transition-transform group-hover:translate-x-1"
+        />
+      </a>
+    </div>
+  </div>
+</section>
