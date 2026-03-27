@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Scaffold Astro 5 project with Tailwind v4, dark theme, fonts, and Cloudflare deploy config
+- [x] 01-01-PLAN.md -- Scaffold Astro 5 project with Tailwind v4, dark theme, fonts, and Cloudflare deploy config
 - [ ] 01-02-PLAN.md -- Content collection schemas, seed data, proof-of-concept index page, and README
 
 ### Phase 2: Components & Content
