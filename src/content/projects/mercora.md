@@ -1,10 +1,11 @@
 ---
 title: "Mercora"
-description: "AI-native e-commerce platform combining composable commerce with intelligent product discovery, recommendations, and automated merchandising."
-stack: ["Next.js", "Python", "Anthropic API", "Medusa.js"]
-status: "In Development"
+description: "AI-powered outdoor gear e-commerce platform built on Cloudflare's edge infrastructure with Volt, an intelligent shopping assistant featuring semantic search and personalized recommendations."
+stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare AI", "Stripe", "Drizzle ORM", "shadcn/ui"]
+status: "Live"
+url: "https://voltique.russellkmoore.me"
 featured: true
 order: 1
 ---
 
-Mercora reimagines e-commerce with AI at its core, combining the flexibility of composable commerce architecture with intelligent product discovery, personalized recommendations, and automated merchandising decisions.
+Mercora is a production-ready, AI-enhanced e-commerce platform specializing in outdoor gear, built entirely on Cloudflare's edge infrastructure. Features Volt, an intelligent AI shopping assistant with semantic search, personalization engine, and vector-based product recommendations powered by Cloudflare AI (Llama 3.1). Includes a comprehensive admin dashboard with order management, analytics, AI-powered content generation, and Stripe payment processing with real-time tax calculation.
