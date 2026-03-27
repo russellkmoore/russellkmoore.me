@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-27T00:28:22.266Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-27T00:32:53.690Z"
 last_activity: 2026-03-27
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-26)
 ## Current Position
 
 Phase: 1 of 3 (Foundation & Scaffolding)
-Plan: 1 of 2 in current phase
+Plan: 2 of 2 in current phase
 Status: Ready to execute
 Last activity: 2026-03-27
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-foundation-scaffolding P01 | 3min | 2 tasks | 9 files |
+| Phase 01-foundation-scaffolding P02 | 2min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Recent decisions affecting current work:
 - [Phase 01-01]: No @astrojs/cloudflare adapter for static output -- SSR-only, not needed
 - [Phase 01-01]: Used is:inline on FOUC prevention style to keep it in HTML output
 - [Phase 01-01]: Tailwind v4 CSS-based config with @custom-variant dark and @theme tokens
+- [Phase 01-foundation-scaffolding]: Content config at src/content.config.ts (Astro 5 location, not old src/content/config.ts)
+- [Phase 01-foundation-scaffolding]: Draft filtering via getCollection callback, not post-query filter
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T00:28:22.262Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-03-27T00:32:53.688Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None

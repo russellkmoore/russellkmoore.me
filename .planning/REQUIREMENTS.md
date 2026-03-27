@@ -12,11 +12,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INFRA-01**: Site builds with Astro 5 + TypeScript and deploys to Cloudflare Workers via wrangler
 - [x] **INFRA-02**: Tailwind CSS v4 configured with dark theme tokens (~#0a0a0f bg, #7c3aed violet accent, off-white text, muted gray secondary)
 - [x] **INFRA-03**: Geist Sans font loaded via @fontsource with Inter fallback, no visible layout shift
-- [ ] **INFRA-04**: Content collections defined for projects/ (title, description, stack[], status, url?, featured) and writing/ (title, date, excerpt, tags[], draft)
-- [ ] **INFRA-05**: Seed project entries created: Mercora and RecompAI
-- [ ] **INFRA-06**: Seed writing entries created (all draft:true): 3 articles
+- [x] **INFRA-04**: Content collections defined for projects/ (title, description, stack[], status, url?, featured) and writing/ (title, date, excerpt, tags[], draft)
+- [x] **INFRA-05**: Seed project entries created: Mercora and RecompAI
+- [x] **INFRA-06**: Seed writing entries created (all draft:true): 3 articles
 - [x] **INFRA-07**: npm scripts work: dev, build, deploy
-- [ ] **INFRA-08**: README documents local dev setup and deploy instructions
+- [x] **INFRA-08**: README documents local dev setup and deploy instructions
 
 ### Layout
 
@@ -108,11 +108,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Complete |
 | INFRA-03 | Phase 1 | Complete |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
-| INFRA-06 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Complete |
+| INFRA-05 | Phase 1 | Complete |
+| INFRA-06 | Phase 1 | Complete |
 | INFRA-07 | Phase 1 | Complete |
-| INFRA-08 | Phase 1 | Pending |
+| INFRA-08 | Phase 1 | Complete |
 | LAYOUT-01 | Phase 2 | Pending |
 | LAYOUT-02 | Phase 2 | Pending |
 | LAYOUT-03 | Phase 2 | Pending |
