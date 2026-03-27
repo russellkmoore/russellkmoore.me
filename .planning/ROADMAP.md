@@ -71,7 +71,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -106,10 +106,11 @@ Plans:
 
 ### Phase 6: Project detail pages
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Individual project detail pages at /projects/[slug] with case study MDX content, tech stack breakdowns, and challenges/outcomes -- homepage project cards link to detail pages instead of expanding on hover
+**Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 5
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 6 to break down)
+- [ ] 06-01-PLAN.md -- Update project schema for MDX + images, create ProjectLayout, dynamic route, and update homepage cards with detail links
+- [ ] 06-02-PLAN.md -- Convert all 7 project .md files to .mdx with case study content
