@@ -1,0 +1,85 @@
+---
+title: "Mercora"
+description: "AI-powered outdoor gear e-commerce platform built on Cloudflare's edge infrastructure with Volt, an intelligent shopping assistant featuring semantic search and personalized recommendations."
+stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare AI", "Stripe", "Drizzle ORM", "shadcn/ui"]
+status: "Live"
+url: "https://voltique.russellkmoore.me"
+github: "https://github.com/russellkmoore/mercora"
+featured: true
+order: 1
+---
+
+## Overview
+
+Mercora is a production-ready, AI-enhanced e-commerce platform specializing in outdoor gear, built entirely on Cloudflare's edge infrastructure. The platform was designed to prove that a full-featured online store -- complete with AI-powered shopping assistance, payment processing, and admin tooling -- can run entirely at the edge without traditional cloud servers.
+
+At the heart of Mercora is **Volt**, an intelligent AI shopping assistant that goes beyond simple keyword search. Volt understands natural language queries, learns from browsing behavior, and delivers personalized product recommendations using vector embeddings. A customer can ask "What do I need for a weekend backpacking trip in the Rockies?" and receive a curated set of recommendations drawn from the full product catalog.
+
+The platform includes a comprehensive admin dashboard for managing orders, tracking analytics, generating AI-powered product descriptions, and configuring the storefront -- all served from Cloudflare Workers with no origin server.
+
+## Tech Stack Breakdown
+
+### Infrastructure
+
+- **Cloudflare Workers** -- The entire application runs on Workers, eliminating cold starts and placing compute within milliseconds of users worldwide. Server-side rendering, API routes, and AI inference all execute at the edge.
+- **D1 (SQLite at Edge)** -- Cloudflare's distributed SQLite database handles all relational data: products, orders, users, cart state. Chose D1 over a traditional database to keep the entire stack on Cloudflare's network, avoiding cross-network latency.
+- **R2 (Object Storage)** -- Product images, AI-generated content assets, and admin uploads are stored in R2. S3-compatible API with zero egress fees keeps costs predictable as the catalog grows.
+
+### Frontend
+
+- **Next.js 15** -- Server components for the storefront pages, with client components where interactivity is needed (cart, Volt chat interface, admin dashboard). App Router with nested layouts provides clean code organization.
+- **shadcn/ui** -- Pre-built, accessible UI components that are copied into the project (not imported as a dependency). Provides a consistent design system across the storefront and admin dashboard without adding bundle weight.
+
+### AI & Search
+
+- **Cloudflare AI (Llama 3.1)** -- Powers Volt's natural language understanding, product description generation, and conversational shopping experience. Running inference at the edge means responses arrive in under a second.
+- **Vector Embeddings** -- Product descriptions and user queries are embedded into vector space for semantic search. When a customer describes what they need in plain English, Volt finds relevant products by meaning rather than keyword matching.
+
+### Payments
+
+- **Stripe** -- Full checkout flow with real-time tax calculation via Stripe Tax. Handles payment intents, webhook processing for order fulfillment, and refund management. All Stripe communication happens server-side on Workers.
+- **Drizzle ORM** -- Type-safe database queries with zero runtime overhead. Schema definitions serve as the single source of truth for the D1 database structure, with automatic migration generation.
+
+## Key Features
+
+- **Volt AI Shopping Assistant** -- Conversational product discovery with semantic search, personalization engine, and context-aware recommendations that improve with each interaction.
+- **Full Admin Dashboard** -- Order management, sales analytics, inventory tracking, and AI-powered product content generation -- all in a single admin interface.
+- **Edge-Native Architecture** -- Zero origin servers. Every request is handled by Cloudflare Workers, with data in D1, files in R2, and inference on Cloudflare AI.
+- **Real-Time Tax Calculation** -- Stripe Tax computes accurate sales tax at checkout based on customer location, product type, and current tax regulations.
+- **AI Content Generation** -- Admin users can generate product descriptions, SEO metadata, and marketing copy directly from the dashboard using Cloudflare AI.
+- **Responsive Storefront** -- Mobile-first product browsing with filterable categories, detailed product pages, and a persistent cart experience.
+
+## Challenges & Solutions
+
+### Running a Full E-Commerce Stack at the Edge
+
+**Problem:** Traditional e-commerce platforms rely on centralized databases and application servers. Moving everything to Cloudflare's edge meant working within Workers' execution limits (CPU time, memory) while maintaining the performance expectations of a real store.
+
+**Approach:** Decomposed the application into smaller Worker-compatible units. Product catalog reads are optimized with D1's read replicas. Cart state is managed client-side with server validation. Order processing uses Durable Objects for consistency guarantees during checkout.
+
+**Solution:** The architecture achieves sub-100ms response times for product pages globally. Checkout flows complete reliably with Stripe webhook processing handled asynchronously by Workers. The entire platform runs without a single traditional server.
+
+### AI-Powered Semantic Search on Edge Infrastructure
+
+**Problem:** Semantic search typically requires a dedicated vector database and GPU inference servers. Implementing Volt's natural language product discovery entirely on Cloudflare's infrastructure was uncharted territory.
+
+**Approach:** Used Cloudflare AI's embedding models to vectorize the product catalog at ingestion time. Query vectors are generated at request time using the same model. Similarity search runs against stored vectors in D1 with a custom ranking algorithm.
+
+**Solution:** Volt delivers relevant product recommendations from natural language queries with response times under 800ms. The vector search approach finds products that keyword matching would miss entirely -- "something to keep my food safe from bears" correctly returns bear canisters and food hanging kits.
+
+### Stripe Integration with Edge Compute Constraints
+
+**Problem:** Stripe's webhook processing requires reliable, ordered event handling. Workers' stateless execution model doesn't naturally support the sequential processing that payment workflows demand.
+
+**Approach:** Implemented idempotent webhook handlers with D1-based event deduplication. Each webhook event is logged before processing, and order state transitions are validated before being applied. Failed processing triggers retry logic with exponential backoff.
+
+**Solution:** Payment processing is reliable across thousands of transactions with zero double-charges or missed fulfillment events. The idempotent design means webhook retries from Stripe are handled gracefully without side effects.
+
+## Outcomes
+
+- **Sub-100ms page loads** globally via edge-rendered pages with D1 read replicas
+- **Full AI shopping experience** with semantic search, personalization, and conversational product discovery
+- **Zero traditional servers** -- entire platform runs on Cloudflare Workers, D1, R2, and AI
+- **Production payment processing** with Stripe integration handling real transactions and tax calculation
+- **Comprehensive admin tooling** enabling non-technical store management with AI-assisted content creation
+- **Open-source reference** demonstrating that a complete e-commerce platform can run entirely at the edge
