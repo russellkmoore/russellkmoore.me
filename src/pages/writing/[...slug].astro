@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
+import { Icon } from "astro-icon/components";
 import PostLayout from "../../layouts/PostLayout.astro";
+import PostCard from "../../components/PostCard.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing", ({ data }) => !data.draft);
@@ -12,21 +14,83 @@ export async function getStaticPaths() {
     params: { slug: post.id },
     props: {
       post,
+      allPosts: sortedPosts,
       prevPost: index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null,
       nextPost: index > 0 ? sortedPosts[index - 1] : null,
     },
   }));
 }
 
-const { post, prevPost, nextPost } = Astro.props;
+const { post, allPosts, prevPost, nextPost } = Astro.props;
 const { Content } = await render(post);
+
+// Related posts: same tags, exclude current, max 3
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id && p.data.tags.some((t: string) => post.data.tags.includes(t)))
+  .slice(0, 3);
+
+const postUrl = new URL(`/writing/${post.id}`, Astro.site).toString();
+const shareText = encodeURIComponent(post.data.title);
+const shareUrl = encodeURIComponent(postUrl);
 ---
 
 <PostLayout frontmatter={post.data}>
   <Content />
 
+  <!-- Social share buttons -->
+  <div class="mt-12 flex items-center gap-4 border-t border-white/10 pt-8 not-prose">
+    <span class="text-sm text-muted">Share:</span>
+    <a
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
+      aria-label="Share on LinkedIn"
+    >
+      <Icon name="lucide:linkedin" class="size-4" />
+      LinkedIn
+    </a>
+    <a
+      href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
+      aria-label="Share on X"
+    >
+      <Icon name="lucide:twitter" class="size-4" />
+      X
+    </a>
+    <button
+      id="copy-link"
+      class="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
+      data-url={postUrl}
+      aria-label="Copy link"
+    >
+      <Icon name="lucide:link" class="size-4" />
+      <span id="copy-label">Copy link</span>
+    </button>
+  </div>
+
+  <!-- Related posts -->
+  {relatedPosts.length > 0 && (
+    <div class="mt-12 not-prose">
+      <h3 class="text-lg font-semibold text-foreground">Related Articles</h3>
+      <div class="mt-4 flex flex-col gap-4">
+        {relatedPosts.map((related) => (
+          <PostCard
+            title={related.data.title}
+            description={related.data.description}
+            pubDate={related.data.pubDate}
+            tags={related.data.tags}
+            href={`/writing/${related.id}`}
+          />
+        ))}
+      </div>
+    </div>
+  )}
+
   <!-- Prev/Next navigation -->
-  <nav class="mt-16 flex items-center justify-between border-t border-white/10 pt-8 not-prose">
+  <nav class="mt-12 flex items-center justify-between border-t border-white/10 pt-8 not-prose">
     <div>
       {prevPost && (
         <a
@@ -51,3 +115,16 @@ const { Content } = await render(post);
     </div>
   </nav>
 </PostLayout>
+
+<script>
+  const copyBtn = document.getElementById("copy-link");
+  const copyLabel = document.getElementById("copy-label");
+  copyBtn?.addEventListener("click", async () => {
+    const url = (copyBtn as HTMLElement).dataset.url ?? window.location.href;
+    await navigator.clipboard.writeText(url);
+    if (copyLabel) {
+      copyLabel.textContent = "Copied!";
+      setTimeout(() => { copyLabel.textContent = "Copy link"; }, 2000);
+    }
+  });
+</script>
