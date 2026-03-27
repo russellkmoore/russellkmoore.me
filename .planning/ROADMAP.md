@@ -78,15 +78,15 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Foundation & Scaffolding | 2/2 | Complete | 2026-03-27 |
 | 2. Components & Content | 2/4 | In Progress|  |
 | 3. Polish & Production | 2/2 | Complete   | 2026-03-27 |
-| 4. Career Timelines | 0/2 | Planned | |
+| 4. Career Timelines | 1/2 | In Progress|  |
 
 ### Phase 4: Career timelines with researched accomplishments and graphical timeline components for AT&T, Spark::red, and Pivotree
 
 **Goal:** Replace placeholder Career section with accurate resume-based content and per-company horizontal accomplishment timelines for AT&T, Spark::red, Pivotree, and Black Magic Consulting
 **Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 3
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 04-01-PLAN.md -- Create reusable TimelineBar and MilestoneNode components for horizontal accomplishment timelines
+- [x] 04-01-PLAN.md -- Create reusable TimelineBar and MilestoneNode components for horizontal accomplishment timelines
 - [ ] 04-02-PLAN.md -- Rewrite Career.astro with correct resume data for 4 companies and wire in timeline components
