@@ -1,0 +1,69 @@
+---
+import Layout from "./Layout.astro";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    tags: string[];
+  };
+}
+
+const { frontmatter } = Astro.props;
+const formattedDate = new Date(frontmatter.pubDate).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Layout
+  title={`${frontmatter.title} | Russell Moore`}
+  description={frontmatter.description}
+  ogType="article"
+>
+  <!-- Full-width hero gradient -->
+  <div class="w-full bg-gradient-to-b from-[rgba(124,58,237,0.08)] to-transparent">
+    <div class="mx-auto max-w-3xl px-6 pb-8 pt-32">
+      <a
+        href="/writing"
+        class="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-foreground"
+      >
+        <span aria-hidden="true">&larr;</span> Back to Writing
+      </a>
+    </div>
+  </div>
+
+  <!-- Centered content column -->
+  <div class="mx-auto max-w-3xl px-6">
+    <!-- Post header -->
+    <header class="mb-10">
+      <time datetime={frontmatter.pubDate.toISOString()} class="text-sm text-muted">
+        {formattedDate}
+      </time>
+      <h1 class="mt-3 text-4xl font-bold text-foreground md:text-5xl">
+        {frontmatter.title}
+      </h1>
+      {frontmatter.tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {frontmatter.tags.map((tag) => (
+            <span class="inline-flex items-center rounded bg-accent/20 px-2 py-0.5 text-xs font-medium text-accent">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <!-- Article body with prose styling -->
+    <article class="prose prose-invert prose-lg max-w-none">
+      <slot />
+    </article>
+
+    <!-- TODO: Prev/next navigation — will be wired in Plan 02 -->
+  </div>
+
+  <!-- Bottom spacing -->
+  <div class="h-24"></div>
+</Layout>
