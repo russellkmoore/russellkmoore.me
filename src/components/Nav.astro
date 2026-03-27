@@ -1,0 +1,110 @@
+---
+import { Icon } from "astro-icon/components";
+
+const links = [
+  { href: "#about", label: "About" },
+  { href: "#projects", label: "Projects" },
+  { href: "#career", label: "Career" },
+  { href: "#writing", label: "Writing" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<div id="nav-sentinel" class="absolute top-0 h-0"></div>
+
+<nav id="site-nav" class="fixed top-0 z-50 w-full transition-colors duration-300">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="#" class="text-lg font-semibold text-foreground">Russell Moore</a>
+
+    <div class="hidden items-center gap-8 md:flex">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm text-muted transition-colors hover:text-foreground"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <button id="menu-toggle" class="md:hidden" aria-label="Toggle menu">
+      <Icon name="lucide:menu" class="size-6 text-foreground" />
+    </button>
+  </div>
+</nav>
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-40 translate-x-full transition-transform duration-300 md:hidden"
+>
+  <div id="menu-backdrop" class="absolute inset-0 bg-black/50"></div>
+  <div class="absolute right-0 top-0 flex h-full w-64 flex-col bg-background p-6">
+    <button id="menu-close" class="mb-8 self-end" aria-label="Close menu">
+      <Icon name="lucide:x" class="size-6 text-foreground" />
+    </button>
+    <nav class="flex flex-col gap-6">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="text-lg text-muted transition-colors hover:text-foreground"
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</div>
+
+<script>
+  const sentinel = document.getElementById("nav-sentinel");
+  const nav = document.getElementById("site-nav");
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const close = document.getElementById("menu-close");
+  const backdrop = document.getElementById("menu-backdrop");
+
+  // Sticky nav scroll detection
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        nav?.classList.remove(
+          "bg-background/95",
+          "backdrop-blur-sm",
+          "border-b",
+          "border-white/10",
+        );
+      } else {
+        nav?.classList.add(
+          "bg-background/95",
+          "backdrop-blur-sm",
+          "border-b",
+          "border-white/10",
+        );
+      }
+    },
+    { threshold: 0 },
+  );
+
+  if (sentinel) observer.observe(sentinel);
+
+  // Mobile menu
+  function openMenu() {
+    menu?.classList.remove("translate-x-full");
+    menu?.classList.add("translate-x-0");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    menu?.classList.remove("translate-x-0");
+    menu?.classList.add("translate-x-full");
+    document.body.style.overflow = "";
+  }
+
+  toggle?.addEventListener("click", openMenu);
+  close?.addEventListener("click", closeMenu);
+  backdrop?.addEventListener("click", closeMenu);
+
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+</script>

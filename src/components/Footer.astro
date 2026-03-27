@@ -1,0 +1,29 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<footer class="border-t border-white/10 py-8">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6">
+    <p class="text-sm text-muted">&copy; {new Date().getFullYear()} Russell Moore</p>
+    <div class="flex items-center gap-4">
+      <a
+        href="https://linkedin.com/in/russellkmoore"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+        class="text-muted transition-colors hover:text-foreground"
+      >
+        <Icon name="lucide:linkedin" class="size-5" />
+      </a>
+      <a
+        href="https://github.com/russellkmoore"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        class="text-muted transition-colors hover:text-foreground"
+      >
+        <Icon name="lucide:github" class="size-5" />
+      </a>
+    </div>
+  </div>
+</footer>
