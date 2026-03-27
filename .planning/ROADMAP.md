@@ -78,3 +78,13 @@ Phases execute in numeric order: 1 -> 2 -> 3
 | 1. Foundation & Scaffolding | 2/2 | Complete | 2026-03-27 |
 | 2. Components & Content | 2/4 | In Progress|  |
 | 3. Polish & Production | 2/2 | Complete   | 2026-03-27 |
+
+### Phase 4: Career timelines with researched accomplishments and graphical timeline components for AT&T, Spark::red, and Pivotree
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 3
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 4 to break down)

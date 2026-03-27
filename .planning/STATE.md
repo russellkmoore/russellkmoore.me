@@ -85,6 +85,10 @@ Recent decisions affecting current work:
 
 None yet.
 
+### Roadmap Evolution
+
+- Phase 4 added: Career timelines with researched accomplishments and graphical timeline components for AT&T, Spark::red, and Pivotree
+
 ### Blockers/Concerns
 
 None yet.
