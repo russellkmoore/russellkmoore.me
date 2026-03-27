@@ -109,8 +109,8 @@ Plans:
 **Goal:** Individual project detail pages at /projects/[slug] with case study MDX content, tech stack breakdowns, and challenges/outcomes -- homepage project cards link to detail pages instead of expanding on hover
 **Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 5
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 06-01-PLAN.md -- Update project schema for MDX + images, create ProjectLayout, dynamic route, and update homepage cards with detail links
+- [x] 06-01-PLAN.md -- Update project schema for MDX + images, create ProjectLayout, dynamic route, and update homepage cards with detail links
 - [ ] 06-02-PLAN.md -- Convert all 7 project .md files to .mdx with case study content
