@@ -1,0 +1,27 @@
+---
+title: "Oversea Casing"
+description: "Shopify theme customization for a sausage casing e-commerce store — collection grouping by casing type, product card alignment, and per-unit pricing display."
+stack: ["Shopify", "Liquid", "Vanilla JS"]
+status: "Live"
+featured: false
+order: 4
+---
+
+## Overview
+
+Oversea Casing is a targeted Shopify theme customization for a specialty food e-commerce store selling sausage casings. The store needed its collection pages to reflect how customers actually shop for casings -- by type (natural vs. artificial) and sub-category -- rather than the default flat product grid. The work also addressed visual inconsistencies in product cards and added per-unit pricing visibility that is critical for a wholesale-adjacent business.
+
+Every change was made with backward compatibility as a hard constraint. The store has dozens of existing collection and product pages that could not break during the update.
+
+## Tech Stack
+
+- **Shopify** -- The store's existing e-commerce platform. All customizations are theme-level modifications, not app installations, keeping the setup simple and maintainable.
+- **Liquid** -- Shopify's templating language handles the collection grouping logic, conditional rendering for casing types, and per-unit pricing calculations server-side.
+- **Vanilla JS** -- Client-side enhancements for dynamic per-unit pricing updates when customers select different variants. No framework dependencies -- just targeted DOM manipulation.
+
+## Highlights
+
+- **Collection grouping by casing type** -- Products are organized into natural and artificial casing categories with sub-categories, matching how customers think about their purchases
+- **Consistent product card alignment** -- Standardized card heights and variant display across all collection pages, fixing visual inconsistencies in the original theme
+- **Per-unit pricing visibility** -- Dynamic pricing display shows cost per unit alongside package pricing, with real-time updates when variant selections change
+- **Backward-compatible implementation** -- All changes scoped to specific collection templates, with zero impact on existing pages across the rest of the store

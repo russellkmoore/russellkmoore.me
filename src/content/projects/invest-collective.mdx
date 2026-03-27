@@ -1,0 +1,31 @@
+---
+title: "The Invest Collective"
+description: "Trading group platform with member management, research library with PDF uploads, market tracking tools, and analytics dashboards — secured with Cloudflare Zero Trust."
+stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare Access", "shadcn/ui", "Drizzle ORM"]
+status: "In Development"
+featured: false
+url: https://staging.theinvestcollective.com
+order: 3
+---
+
+## Overview
+
+The Invest Collective is a comprehensive web platform for a private trading group, replacing a scattered mix of Discord channels, Google Docs, and spreadsheets with a purpose-built application. Members can access a curated research library, track market theses, and monitor macro cycle indicators -- all behind Cloudflare Zero Trust authentication.
+
+The platform is designed for a specific community's workflow: research articles are published by senior members with PDF attachments and topic-based filtering. Market tracking tools like thesis trackers, cycle navigators, and regime trackers give members a shared view of the group's investment framework. An admin dashboard provides geographic, traffic, content, and time-based analytics.
+
+## Tech Stack
+
+- **Next.js 15** -- App Router with server and client components. Server components handle data fetching and rendering for research articles and market trackers. Client components power interactive dashboards and the member application workflow.
+- **Cloudflare Workers** -- Hosts the application at the edge with D1 for relational data and R2 for file storage. API routes handle member management, research CRUD, and analytics aggregation.
+- **D1** -- Stores member profiles, research articles, market tracking data, application submissions, and analytics events. Drizzle ORM provides type-safe queries with automatic migration management.
+- **R2** -- Object storage for PDF research documents and member-uploaded files. Direct upload from the client with server-signed URLs.
+- **Cloudflare Access** -- Zero Trust authentication gates the entire platform. Members authenticate through Cloudflare's identity layer, and role-based access controls manage admin vs. member permissions.
+- **shadcn/ui** -- Consistent component library across the member portal and admin dashboard. Data tables, forms, and chart components provide a polished interface.
+
+## Highlights
+
+- **Member application workflow** -- Prospective members submit applications that admins review, approve, or reject with configurable criteria and email notifications
+- **Research library with PDF support** -- Articles with rich text content, attached PDF documents, topic-based filtering, and full-text search across the research archive
+- **Market tracking tools** -- Thesis tracker, cycle navigator, and regime tracker provide shared frameworks for the group's investment analysis
+- **Analytics dashboard** -- Geographic distribution, traffic patterns, content engagement, and time-based usage metrics give admins visibility into platform health

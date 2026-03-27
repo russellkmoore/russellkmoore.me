@@ -1,0 +1,31 @@
+---
+title: "justblackmagic.com"
+description: "Professional consulting website built on Astro 5 and Cloudflare Workers with MDX blog, D1 database, contact form with Turnstile bot protection, and Zero Trust admin."
+stack: ["Astro 5", "Cloudflare Workers", "D1", "Tailwind CSS", "MDX", "Resend", "Turnstile"]
+status: "Live"
+featured: false
+order: 6
+---
+
+## Overview
+
+justblackmagic.com is a professional consulting website that doubles as a technical proving ground for the Astro 5 + Cloudflare Workers stack. The site combines static page generation for fast content delivery with server-side API routes for dynamic functionality -- contact form processing, database-backed content, and admin authentication.
+
+What sets this project apart from a typical static site is the full edge infrastructure behind it. A D1 database powers dynamic content sections, Resend handles transactional email delivery, Cloudflare Turnstile protects the contact form from bots without CAPTCHAs, and Cloudflare Access Zero Trust gates the admin interface. The entire stack deploys across development, staging, and production environments with no traditional servers.
+
+## Tech Stack
+
+- **Astro 5** -- Static site generation for pages with server-side API routes via Cloudflare Workers adapter. MDX blog content compiles to optimized HTML at build time.
+- **Cloudflare Workers** -- Handles API routes for contact form submission, admin authentication, and dynamic content retrieval. Server-side logic runs at the edge.
+- **D1** -- SQLite database at the edge stores dynamic content and contact form submissions. Schema managed with Drizzle ORM migrations.
+- **Tailwind CSS** -- Utility-first styling with dark theme. CSS-based configuration via Tailwind v4.
+- **Resend** -- Transactional email delivery for contact form notifications. Styled HTML templates for professional email presentation.
+- **Turnstile** -- Cloudflare's privacy-preserving bot protection on the contact form. Invisible challenge that doesn't degrade user experience.
+- **Cloudflare Access** -- Zero Trust authentication for the admin interface. No custom auth implementation needed -- identity verification handled at the network edge.
+
+## Highlights
+
+- **Edge-native hybrid architecture** -- Static pages for speed, Workers API routes for dynamic functionality, all on one platform with no origin server
+- **Bot-protected contact form** -- Turnstile integration provides invisible bot protection without frustrating CAPTCHAs, with Resend delivering styled email notifications
+- **Zero Trust admin** -- Cloudflare Access gates the admin interface at the network level, eliminating the need for custom authentication code
+- **Multi-environment deployment** -- Full dev/staging/production pipeline with environment-specific D1 databases and configuration

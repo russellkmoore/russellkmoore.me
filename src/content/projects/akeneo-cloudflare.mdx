@@ -1,0 +1,30 @@
+---
+title: "Akeneo Cloudflare Connector"
+description: "Reference implementation bridging Akeneo PIM with Cloudflare's edge infrastructure — global catalog caching with sub-20-second refresh for 1,200+ products."
+stack: ["Cloudflare Workers", "Cloudflare KV", "Akeneo PIM", "Node.js", "Docker"]
+status: "Live"
+github: "https://github.com/russellkmoore/akeneo-cloudflare-connector"
+featured: false
+order: 5
+---
+
+## Overview
+
+The Akeneo Cloudflare Connector bridges Akeneo PIM (Product Information Management) with Cloudflare's edge infrastructure to deliver a fast, globally distributed product catalog. It solves a common e-commerce problem: PIM systems are powerful for managing product data but slow to serve it directly to customers. This connector caches the entire catalog at the edge, rendering category hierarchies and product detail pages with sub-second response times.
+
+Built as an open-source reference implementation, the project serves as both a production-ready connector and an educational resource for developers working with the Akeneo REST API and Cloudflare edge caching patterns.
+
+## Tech Stack
+
+- **Cloudflare Workers** -- Serves product pages and category listings at the edge. Handles incoming requests, reads from KV cache, and renders HTML responses without an origin server roundtrip.
+- **Cloudflare KV** -- Global key-value store caches the full product catalog. Category hierarchies, product details, and media references are stored as structured JSON for fast retrieval at any edge location.
+- **Akeneo PIM** -- Source of truth for product data. The connector syncs product information, categories, and media via Akeneo's REST API on a configurable schedule.
+- **Node.js** -- Sync process that fetches product data from Akeneo, transforms it into the edge-optimized format, and writes to KV. Runs as a scheduled task or on-demand.
+- **Docker** -- Containerized sync process for consistent deployment across environments. Simplifies setup for developers evaluating the connector.
+
+## Highlights
+
+- **Sub-20-second catalog refresh** for ~70 categories and 1,200+ products -- full sync from Akeneo PIM to Cloudflare KV without downtime
+- **Global edge delivery** -- Product pages served from Cloudflare's nearest edge location, eliminating origin server latency entirely
+- **Open-source reference** -- Documented patterns for Akeneo REST API integration, KV caching strategies, and Workers-based rendering that other developers can learn from and adapt
+- **Zero-downtime updates** -- Catalog refreshes write new data to KV while existing requests continue serving from the current cache
