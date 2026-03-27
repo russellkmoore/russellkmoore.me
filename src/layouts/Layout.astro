@@ -43,8 +43,9 @@ const ogImage = new URL("/og-image.png", Astro.site);
     </style>
   </head>
   <body class="min-h-screen bg-background font-sans text-foreground antialiased">
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <Nav />
-    <main>
+    <main id="main-content">
       <slot />
     </main>
     <Footer />
