@@ -4,6 +4,7 @@ description: "AI-powered body recomposition coaching platform with meal tracking
 stack: ["Cloudflare Workers", "React 19", "Workers AI", "D1", "R2", "Vectorize", "Capacitor"]
 status: "In Development"
 featured: true
+url: https://recomp-ai.russellkmoore.me
 order: 2
 ---
 

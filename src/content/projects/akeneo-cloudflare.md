@@ -3,7 +3,7 @@ title: "Akeneo Cloudflare Connector"
 description: "Reference implementation bridging Akeneo PIM with Cloudflare's edge infrastructure — global catalog caching with sub-20-second refresh for 1,200+ products."
 stack: ["Cloudflare Workers", "Cloudflare KV", "Akeneo PIM", "Node.js", "Docker"]
 status: "Live"
-url: "https://github.com/russellkmoore/akeneo-cloudflare-connector"
+github: "https://github.com/russellkmoore/akeneo-cloudflare-connector"
 featured: false
 order: 5
 ---

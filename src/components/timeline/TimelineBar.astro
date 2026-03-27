@@ -24,7 +24,6 @@ const years: number[] = [];
 for (let y = startYear; y <= endYear; y += yearStep) {
   years.push(y);
 }
-// Always include endYear if not already present
 if (years[years.length - 1] !== endYear) {
   years.push(endYear);
 }
@@ -37,7 +36,6 @@ const processedMilestones = milestones.map((m) => {
   return { ...m };
 });
 
-// Second pass: enforce alternating for clustered milestones
 const yearIndices = new Map<number, number>();
 for (const m of processedMilestones) {
   const total = yearCounts.get(m.yearNum) ?? 1;
@@ -49,58 +47,96 @@ for (const m of processedMilestones) {
 }
 ---
 
-<div
-  class="relative overflow-x-auto scroll-smooth [-webkit-overflow-scrolling:touch] [scroll-snap-type:x_mandatory]"
->
-  <div class="min-w-[600px] relative py-16 px-8 mx-auto">
-    <!-- Horizontal line -->
-    <div class="absolute left-8 right-8 top-1/2 h-0.5 bg-white/15"></div>
+<div class="relative h-32">
+  <!-- Horizontal line -->
+  <div class="absolute left-0 right-0 top-1/2 h-0.5 bg-white/15"></div>
 
-    <!-- Year markers -->
-    <div class="absolute left-8 right-8 top-1/2">
-      {
-        years.map((year) => {
-          const pct = ((year - startYear) / span) * 100;
-          return (
-            <div class="absolute -translate-x-1/2" style={`left: ${pct}%`}>
-              <div class="h-2 w-px bg-white/10" />
-              <span class="absolute top-full mt-1 left-1/2 -translate-x-1/2 text-[10px] text-muted/60 whitespace-nowrap">
-                {year}
-              </span>
-            </div>
-          );
-        })
-      }
-    </div>
+  <!-- Year markers -->
+  {
+    years.map((year) => {
+      const pct = ((year - startYear) / span) * 100;
+      return (
+        <div class="absolute top-1/2 -translate-x-1/2" style={`left: ${pct}%`}>
+          <div class="h-2 w-px bg-white/10" />
+          <span class="absolute top-3 left-1/2 -translate-x-1/2 text-[10px] text-muted/60 whitespace-nowrap">
+            {year}
+          </span>
+        </div>
+      );
+    })
+  }
 
-    <!-- Milestone nodes -->
-    <div class="absolute left-8 right-8 top-1/2">
-      {
-        processedMilestones.map((m, i) => {
-          const pct = ((m.yearNum - startYear) / span) * 100;
-          const isFirst = i === 0;
-          const isLast = i === processedMilestones.length - 1;
-          const edge = isFirst ? "left" : isLast ? "right" : undefined;
-          return (
-            <div
-              class="absolute -translate-x-1/2 -translate-y-1/2"
-              style={`left: ${pct}%`}
-            >
-              <MilestoneNode
-                year={m.year}
-                label={m.label}
-                detail={m.detail}
-                position={m.position}
-                edge={edge}
-              />
-            </div>
-          );
-        })
-      }
-    </div>
-  </div>
+  <!-- Milestone nodes -->
+  {
+    processedMilestones.map((m) => {
+      const pct = ((m.yearNum - startYear) / span) * 100;
+      return (
+        <div
+          class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={`left: ${pct}%`}
+        >
+          <MilestoneNode
+            year={m.year}
+            label={m.label}
+            detail={m.detail}
+            position={m.position}
+          />
+        </div>
+      );
+    })
+  }
 </div>
 
-<p class="mt-2 text-center text-xs text-muted md:hidden">
-  Swipe to explore timeline &rarr;
-</p>
+<!-- Fixed-position tooltip (managed by JS) -->
+<div
+  id="timeline-tooltip"
+  class="pointer-events-none fixed z-[100] hidden w-48 rounded-lg border border-white/10 bg-[#0a0a0f] p-3 text-sm shadow-2xl transition-opacity duration-150"
+>
+  <p class="font-semibold text-accent" data-tt-year></p>
+  <p class="text-foreground font-medium" data-tt-label></p>
+  <p class="mt-1 text-muted text-xs" data-tt-detail></p>
+</div>
+
+<script>
+  const tooltip = document.getElementById("timeline-tooltip");
+  const nodes = document.querySelectorAll(".milestone-node");
+
+  function showTooltip(e: Event) {
+    const node = (e.currentTarget as HTMLElement);
+    const year = node.dataset.tooltipYear ?? "";
+    const label = node.dataset.tooltipLabel ?? "";
+    const detail = node.dataset.tooltipDetail ?? "";
+
+    if (!tooltip) return;
+
+    tooltip.querySelector("[data-tt-year]")!.textContent = year;
+    tooltip.querySelector("[data-tt-label]")!.textContent = label;
+    tooltip.querySelector("[data-tt-detail]")!.textContent = detail;
+
+    const rect = node.getBoundingClientRect();
+    const ttWidth = 192; // w-48
+
+    let left = rect.left + rect.width / 2 - ttWidth / 2;
+    // Keep within viewport
+    left = Math.max(8, Math.min(left, window.innerWidth - ttWidth - 8));
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${rect.top - 8}px`;
+    tooltip.style.transform = "translateY(-100%)";
+    tooltip.classList.remove("hidden");
+    tooltip.style.opacity = "1";
+  }
+
+  function hideTooltip() {
+    if (!tooltip) return;
+    tooltip.style.opacity = "0";
+    setTimeout(() => tooltip.classList.add("hidden"), 150);
+  }
+
+  nodes.forEach((node) => {
+    node.addEventListener("mouseenter", showTooltip);
+    node.addEventListener("mouseleave", hideTooltip);
+    node.addEventListener("focus", showTooltip);
+    node.addEventListener("blur", hideTooltip);
+  });
+</script>

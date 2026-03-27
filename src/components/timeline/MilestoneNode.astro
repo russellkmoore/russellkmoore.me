@@ -4,52 +4,34 @@ interface Props {
   label: string;
   detail: string;
   position?: "above" | "below";
-  edge?: "left" | "right";
 }
 
-const { year, label, detail, position = "above", edge } = Astro.props;
+const { year, label, detail, position = "above" } = Astro.props;
 
 const isAbove = position === "above";
-
-const labelPositionClasses = isAbove ? "bottom-full mb-5" : "top-full mt-5";
-
-const tooltipPositionClasses = isAbove ? "bottom-full mb-8" : "top-full mt-8";
-
-const tooltipAlignClasses =
-  edge === "left"
-    ? "left-0"
-    : edge === "right"
-      ? "right-0"
-      : "left-1/2 -translate-x-1/2";
+const labelClasses = isAbove ? "bottom-full mb-3" : "top-full mt-3";
 ---
 
-<div class="group relative flex flex-col items-center" tabindex="0">
+<div
+  class="milestone-node relative flex flex-col items-center cursor-pointer"
+  tabindex="0"
+  data-tooltip-year={String(year)}
+  data-tooltip-label={label}
+  data-tooltip-detail={detail}
+>
   <!-- Milestone dot -->
   <div
-    class="size-3 rounded-full bg-accent border-2 border-background transition-transform duration-200 group-hover:scale-150 group-focus:scale-150"
+    class="size-3 rounded-full bg-accent border-2 border-background transition-transform duration-200 hover:scale-150 focus:scale-150"
   >
   </div>
 
   <!-- Short label (always visible) -->
   <span
     class:list={[
-      "absolute text-[10px] leading-tight text-muted whitespace-nowrap max-w-[80px] text-center overflow-hidden text-ellipsis",
-      labelPositionClasses,
+      "absolute text-[10px] leading-tight text-muted whitespace-nowrap max-w-[80px] text-center overflow-hidden text-ellipsis pointer-events-none",
+      labelClasses,
     ]}
   >
     {label}
   </span>
-
-  <!-- Tooltip card (hover/focus only) -->
-  <div
-    class:list={[
-      "pointer-events-none absolute z-30 w-56 rounded-lg border border-white/10 bg-[#0a0a0f]/95 backdrop-blur-sm p-3 text-sm shadow-xl opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus:pointer-events-auto group-focus:opacity-100",
-      tooltipPositionClasses,
-      tooltipAlignClasses,
-    ]}
-  >
-    <p class="font-semibold text-accent">{year}</p>
-    <p class="text-foreground font-medium">{label}</p>
-    <p class="mt-1 text-muted text-xs">{detail}</p>
-  </div>
 </div>

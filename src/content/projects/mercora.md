@@ -4,6 +4,7 @@ description: "AI-powered outdoor gear e-commerce platform built on Cloudflare's 
 stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare AI", "Stripe", "Drizzle ORM", "shadcn/ui"]
 status: "Live"
 url: "https://voltique.russellkmoore.me"
+github: "https://github.com/russellkmoore/mercora"
 featured: true
 order: 1
 ---

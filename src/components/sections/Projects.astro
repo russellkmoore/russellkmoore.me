@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
 import Card from "../Card.astro";
 import Badge from "../Badge.astro";
 import SectionHeader from "../SectionHeader.astro";
@@ -8,6 +9,7 @@ const allProjects = await getCollection("projects");
 const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
 const featured = sortedProjects.filter((p) => p.data.featured);
 const other = sortedProjects.filter((p) => !p.data.featured);
+
 ---
 
 <section id="projects" class="py-24">
@@ -17,6 +19,7 @@ const other = sortedProjects.filter((p) => !p.data.featured);
     <!-- Featured projects: larger cards -->
     <div class="grid gap-6 md:grid-cols-2">
       {featured.map((project) => (
+        <div class="group">
         <Card variant="featured">
           <div class="flex items-start justify-between">
             <h3 class="text-xl font-semibold text-foreground">{project.data.title}</h3>
@@ -28,33 +31,66 @@ const other = sortedProjects.filter((p) => !p.data.featured);
               <Badge variant="tech">{tech}</Badge>
             ))}
           </div>
-          {project.data.url && (
-            <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
-              Visit project
-            </a>
+          <div class="mt-4 flex items-center gap-4">
+            {project.data.url && (
+              <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
+                Visit project
+              </a>
+            )}
+            {project.data.github && (
+              <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
+                <Icon name="lucide:github" class="size-4" />
+                Source
+              </a>
+            )}
+          </div>
+          {project.body && (
+            <div class="mt-0 max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-40 group-hover:opacity-100">
+              <p class="text-sm leading-relaxed text-muted border-t border-white/5 pt-3">{project.body}</p>
+            </div>
           )}
         </Card>
+        </div>
       ))}
     </div>
 
-    <!-- Non-featured projects: compact list -->
+    <!-- Non-featured projects: compact cards with hover detail -->
     {other.length > 0 && (
       <div class="mt-8 space-y-4">
         {other.map((project) => (
-          <Card>
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="font-semibold text-foreground">{project.data.title}</h3>
-                <p class="mt-1 text-sm text-muted">{project.data.description}</p>
+          <div class="group relative">
+            <Card>
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold text-foreground">{project.data.title}</h3>
+                  <p class="mt-1 text-sm text-muted">{project.data.description}</p>
+                </div>
+                <Badge variant="status">{project.data.status}</Badge>
               </div>
-              <Badge variant="status">{project.data.status}</Badge>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {project.data.stack.map((tech) => (
-                <Badge variant="tech">{tech}</Badge>
-              ))}
-            </div>
-          </Card>
+              <div class="mt-3 flex flex-wrap items-center gap-2">
+                {project.data.stack.map((tech) => (
+                  <Badge variant="tech">{tech}</Badge>
+                ))}
+                <div class="ml-auto flex items-center gap-3">
+                  {project.data.url && (
+                    <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
+                      <Icon name="lucide:external-link" class="size-3.5" />
+                    </a>
+                  )}
+                  {project.data.github && (
+                    <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
+                      <Icon name="lucide:github" class="size-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
+              {project.body && (
+                <div class="mt-0 max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-40 group-hover:opacity-100">
+                  <p class="text-sm leading-relaxed text-muted border-t border-white/5 pt-3">{project.body}</p>
+                </div>
+              )}
+            </Card>
+          </div>
         ))}
       </div>
     )}

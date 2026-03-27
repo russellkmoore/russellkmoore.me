@@ -2,8 +2,9 @@
 title: "The Invest Collective"
 description: "Trading group platform with member management, research library with PDF uploads, market tracking tools, and analytics dashboards — secured with Cloudflare Zero Trust."
 stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare Access", "shadcn/ui", "Drizzle ORM"]
-status: "Live"
+status: "In Development"
 featured: false
+url: https://staging.theinvestcollective.com
 order: 3
 ---
 
