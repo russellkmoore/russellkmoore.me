@@ -1,0 +1,90 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<section class="relative flex min-h-[65vh] items-center justify-center overflow-hidden">
+  <!-- Mesh gradient background (D-02) -->
+  <div class="hero-gradient" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
+    <h1 class="text-5xl font-bold tracking-tight text-foreground md:text-6xl">
+      Russell Moore
+    </h1>
+    <p class="mx-auto mt-6 max-w-2xl text-xl text-muted md:text-2xl">
+      Building products at the intersection of AI and commerce
+    </p>
+
+    <!-- CTA text links with arrows (D-03) -->
+    <div class="mt-10 flex items-center justify-center gap-8">
+      <a
+        href="#projects"
+        class="group inline-flex items-center gap-2 text-foreground transition-colors hover:text-accent"
+      >
+        See My Work
+        <Icon
+          name="lucide:arrow-right"
+          class="size-4 transition-transform group-hover:translate-x-1"
+        />
+      </a>
+      <a
+        href="#contact"
+        class="group inline-flex items-center gap-2 text-muted transition-colors hover:text-foreground"
+      >
+        Let's Talk
+        <Icon
+          name="lucide:arrow-right"
+          class="size-4 transition-transform group-hover:translate-x-1"
+        />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-gradient {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .hero-gradient::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background:
+      radial-gradient(
+        circle at 30% 40%,
+        rgba(124, 58, 237, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 60%,
+        rgba(59, 130, 246, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(124, 58, 237, 0.05) 0%,
+        transparent 70%
+      );
+    animation: meshMove 20s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes meshMove {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(2%, -3%) scale(1.02);
+    }
+    66% {
+      transform: translate(-2%, 2%) scale(0.98);
+    }
+    100% {
+      transform: translate(1%, -1%) scale(1.01);
+    }
+  }
+</style>
