@@ -101,5 +101,5 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md -- Install MDX + typography, configure Shiki syntax highlighting, create PostLayout and PostCard components
-- [x] 05-02-PLAN.md -- Create dynamic post route at /writing/[slug] and publish one test post
-- [ ] 05-03-PLAN.md -- Create /writing index page and update homepage Writing section with latest 3 posts
+- [ ] 05-02-PLAN.md -- Create dynamic post route at /writing/[slug] and publish one test post
+- [x] 05-03-PLAN.md -- Create /writing index page and update homepage Writing section with latest 3 posts

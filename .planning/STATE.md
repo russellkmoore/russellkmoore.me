@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-03-27T12:23:56.139Z"
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-03-27T12:24:42.705Z"
 last_activity: 2026-03-27
 progress:
   total_phases: 5
@@ -60,7 +60,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-polish-production P02 | 5min | 2 tasks | 6 files |
 | Phase 04 P02 | 15min | 2 tasks | 11 files |
 | Phase 05 P01 | 3min | 2 tasks | 6 files |
-| Phase 05 P02 | 2min | 1 tasks | 2 files |
+| Phase 05 P03 | 2min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -88,7 +88,7 @@ Recent decisions affecting current work:
 - [Phase 04]: Expanded company descriptions with full resume content and added GitHub links to project cards
 - [Phase 05]: Used @astrojs/mdx v4.3.14 (not v5) for Astro 5 compatibility
 - [Phase 05]: Prose color overrides in global.css custom properties, not Tailwind config
-- [Phase 05]: Used [...slug] rest/spread route for future nested path support
+- [Phase 05]: Vertical list layout for /writing index, 3-column grid for homepage writing section
 
 ### Pending Todos
 
@@ -104,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T12:23:56.137Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-03-27T12:24:42.702Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
