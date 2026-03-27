@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import headshot from "../../assets/headshot.jpeg";
 import Card from "../Card.astro";
 import SectionHeader from "../SectionHeader.astro";
 ---
@@ -7,15 +9,24 @@ import SectionHeader from "../SectionHeader.astro";
   <div class="mx-auto max-w-4xl px-6">
     <SectionHeader title="About" />
 
-    <!-- Narrative paragraph (D-17: first-person, direct) -->
-    <p class="max-w-3xl text-lg leading-relaxed text-muted">
-      I build AI-powered products and lead engineering teams that ship at scale.
-      Over two decades, I've taken platforms from zero to $2B+ in transaction
-      volume, built and acquired $13M in ARR, and led distributed teams of 200+
-      engineers across three continents. Today, I'm focused on the intersection
-      of AI and commerce — building tools that make complex systems intelligent
-      and accessible.
-    </p>
+    <!-- Headshot + narrative -->
+    <div class="flex flex-col items-start gap-8 md:flex-row md:items-center">
+      <Image
+        src={headshot}
+        alt="Russell Moore"
+        width={160}
+        height={160}
+        class="size-40 shrink-0 rounded-full object-cover ring-2 ring-white/10"
+      />
+      <p class="max-w-3xl text-lg leading-relaxed text-muted">
+        I build AI-powered products and lead engineering teams that ship at scale.
+        Over two decades, I've taken platforms from zero to $2B+ in transaction
+        volume, built and acquired $13M in ARR, and led distributed teams of 200+
+        engineers across three continents. Today, I'm focused on the intersection
+        of AI and commerce — building tools that make complex systems intelligent
+        and accessible.
+      </p>
+    </div>
 
     <!-- Stats cards (D-10: 4 cards in a row) -->
     <div class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
