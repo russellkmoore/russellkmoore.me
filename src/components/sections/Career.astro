@@ -1,46 +1,233 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
+import TimelineBar from "../timeline/TimelineBar.astro";
+
+const attMilestones = [
+  {
+    year: 2000,
+    yearNum: 2000,
+    label: "IPO",
+    detail: "AT&T Wireless IPO \u2014 world's largest at the time. Web presence established at attws.com.",
+    position: "above" as const,
+  },
+  {
+    year: "~2001",
+    yearNum: 2001,
+    label: "Platform Launch",
+    detail: "attws.com goes transactional \u2014 evolved from marketing site to full e-commerce platform post-Y2K.",
+    position: "below" as const,
+  },
+  {
+    year: 2002,
+    yearNum: 2002,
+    label: "SOX Compliance",
+    detail: "Sarbanes-Oxley Act enacted July 2002. Architected compliance framework for e-commerce platform.",
+    position: "above" as const,
+  },
+  {
+    year: "~2003",
+    yearNum: 2003,
+    label: "eCare Integration",
+    detail: "Integrated eCare customer self-service into the e-commerce platform for unified customer care.",
+    position: "below" as const,
+  },
+  {
+    year: 2004,
+    yearNum: 2004,
+    label: "Cingular Acquisition",
+    detail: "Cingular acquires AT&T Wireless for $41B. Platform transitions to new parent company. PCI DSS v1.0 released \u2014 architected PCI compliance.",
+    position: "above" as const,
+  },
+  {
+    year: "~2005",
+    yearNum: 2005,
+    label: "Amdocs eBill",
+    detail: "Integrated Amdocs eBill for bill presentment and payments post-Cingular acquisition.",
+    position: "below" as const,
+  },
+  {
+    year: "June 2007",
+    yearNum: 2007,
+    label: "iPhone Launch",
+    detail: "Exclusive carrier launch of iPhone. Maintained 99.9% uptime during 10x traffic spikes as AT&T Mobility.",
+    position: "above" as const,
+  },
+];
+
+const sparkredMilestones = [
+  {
+    year: 2007,
+    yearNum: 2007,
+    label: "Founded",
+    detail: "Spark::red was born \u2014 premium Oracle Commerce managed hosting.",
+    position: "above" as const,
+  },
+  {
+    year: 2008,
+    yearNum: 2008,
+    label: "1st Client",
+    detail: "People's Choice Awards \u2014 sustained 140,000 pageviews/min under load.",
+    position: "below" as const,
+  },
+  {
+    year: 2010,
+    yearNum: 2010,
+    label: "1st Office",
+    detail: "Opened first office in Redmond, WA.",
+    position: "above" as const,
+  },
+  {
+    year: 2011,
+    yearNum: 2011,
+    label: "Fortune 1000",
+    detail: "Landed first Fortune 1000 clients. Achieved PCI Level 1 certification.",
+    position: "below" as const,
+  },
+  {
+    year: 2012,
+    yearNum: 2012,
+    label: "Global Expansion",
+    detail: "First European and South African clients. Doubled client base. Grew to 10 Sparklers.",
+    position: "above" as const,
+  },
+  {
+    year: 2013,
+    yearNum: 2013,
+    label: "400% Growth",
+    detail: "400% website traffic growth, 600% mobile traffic growth across managed platforms. Launched Spark::red Insight conference.",
+    position: "below" as const,
+  },
+  {
+    year: 2014,
+    yearNum: 2014,
+    label: "Oracle OpenWorld",
+    detail: "First presentation at Oracle OpenWorld. Team grew to 20+ Sparklers.",
+    position: "above" as const,
+  },
+  {
+    year: 2016,
+    yearNum: 2016,
+    label: "NR Partner of Year",
+    detail: "New Relic Platform Partner of the Year. Launched Insight Europe. 30+ Sparklers.",
+    position: "below" as const,
+  },
+  {
+    year: 2017,
+    yearNum: 2017,
+    label: "Acquisition",
+    detail: "Truworths engagement. Acquisition process begins leading to Pivotree merger.",
+    position: "above" as const,
+  },
+];
+
+const pivotreeMilestones = [
+  {
+    year: "Feb 2018",
+    yearNum: 2018,
+    label: "Merger",
+    detail: "Spark::red, Thinkwrap Commerce, and Tenzing merge to form a combined commerce services provider. Backed by Eventi Capital.",
+    position: "above" as const,
+  },
+  {
+    year: "Mar 2019",
+    yearNum: 2019,
+    label: "Pivotree Brand",
+    detail: "Combined entity officially rebranded as Pivotree, uniting all practices under one banner.",
+    position: "below" as const,
+  },
+  {
+    year: "Oct 2020",
+    yearNum: 2020,
+    label: "IPO",
+    detail: "Pivotree IPO on TSX Venture Exchange at C$8.50/share. ~C$201M market valuation.",
+    position: "above" as const,
+  },
+];
+
+const bmcMilestones = [
+  {
+    year: 2021,
+    yearNum: 2021,
+    label: "Founded",
+    detail: "Launched Black Magic Consulting \u2014 digital transformation advisory for specialty manufacturing.",
+    position: "above" as const,
+  },
+  {
+    year: 2024,
+    yearNum: 2024,
+    label: "AI/ML Strategy",
+    detail: "AI/ML optimization strategy for e-commerce retailer \u2014 applying machine learning to commerce operations.",
+    position: "below" as const,
+  },
+  {
+    year: "Q1 2025",
+    yearNum: 2025,
+    label: "RBM Software",
+    detail: "RBM Software strategic turnaround \u2014 operational and product strategy for software business recovery.",
+    position: "above" as const,
+  },
+];
 ---
 
 <section id="career" class="py-24">
   <div class="mx-auto max-w-4xl px-6">
     <SectionHeader title="Career" subtitle="Where I've made impact" />
 
-    <div class="relative ml-4 space-y-12 border-l-2 border-white/10 pl-8">
+    <div class="relative ml-4 space-y-16 border-l-2 border-white/10 pl-8">
       <!-- AT&T -->
       <div class="relative">
         <div class="absolute -left-[calc(2rem+9px)] top-1 size-4 rounded-full border-2 border-accent bg-background"></div>
-        <h3 class="text-lg font-semibold text-foreground">AT&T</h3>
-        <p class="text-sm text-accent">Sr. Director, Engineering</p>
-        <ul class="mt-3 space-y-1 text-sm text-muted">
-          <li>Led a platform serving $2B+ in annual transaction volume</li>
-          <li>Managed 200+ engineers across distributed global teams</li>
-          <li>Drove architecture modernization from monolith to composable microservices</li>
-        </ul>
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="text-lg font-semibold text-foreground">AT&T</h3>
+          <span class="shrink-0 text-sm text-muted">1997 - 2008</span>
+        </div>
+        <p class="text-sm text-accent">Chief Architect, E-Commerce</p>
+        <p class="mt-2 text-sm text-muted">Architected the e-commerce platform for AT&T Wireless (later Cingular, then AT&T Mobility), scaling from a marketing site to a full transactional system supporting $2B+ annual digital revenue and 13M+ customers across B2C, B2B, and customer care channels.</p>
+        <div class="mt-6">
+          <TimelineBar startYear={1997} endYear={2008} milestones={attMilestones} />
+        </div>
       </div>
 
       <!-- Spark::red -->
       <div class="relative">
         <div class="absolute -left-[calc(2rem+9px)] top-1 size-4 rounded-full border-2 border-accent bg-background"></div>
-        <h3 class="text-lg font-semibold text-foreground">Spark::red</h3>
-        <p class="text-sm text-accent">Co-founder and CTO</p>
-        <ul class="mt-3 space-y-1 text-sm text-muted">
-          <li>Co-founded and built an AI-powered product from zero to acquisition</li>
-          <li>Scaled ARR to $3M before successful exit</li>
-          <li>Hands-on technical leadership across full stack and ML pipeline</li>
-        </ul>
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="text-lg font-semibold text-foreground">Spark::red</h3>
+          <span class="shrink-0 text-sm text-muted">2007 - 2018</span>
+        </div>
+        <p class="text-sm text-accent">Co-Founder and CEO</p>
+        <p class="mt-2 text-sm text-muted">Built an Oracle Commerce managed hosting company from zero to acquisition. Premium managed services for Fortune 1000 brands across 4 continents, earning New Relic Platform Partner of the Year.</p>
+        <div class="mt-6">
+          <TimelineBar startYear={2007} endYear={2018} milestones={sparkredMilestones} />
+        </div>
       </div>
 
       <!-- Pivotree -->
       <div class="relative">
         <div class="absolute -left-[calc(2rem+9px)] top-1 size-4 rounded-full border-2 border-accent bg-background"></div>
-        <h3 class="text-lg font-semibold text-foreground">Pivotree</h3>
-        <p class="text-sm text-accent">VP, Engineering and Technology</p>
-        <ul class="mt-3 space-y-1 text-sm text-muted">
-          <li>Built and acquired $13M in ARR through organic growth and strategic M&A</li>
-          <li>Led digital commerce practice serving Fortune 500 clients</li>
-          <li>Established engineering centers of excellence across 3 continents</li>
-        </ul>
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="text-lg font-semibold text-foreground">Pivotree</h3>
+          <span class="shrink-0 text-sm text-muted">2018 - 2019</span>
+        </div>
+        <p class="text-sm text-accent">SVP, Managed Services</p>
+        <p class="mt-2 text-sm text-muted">Led the $30M managed services division with 200+ global staff following the merger of Spark::red, Thinkwrap, and Tenzing. Achieved $1M+ annual cost reduction and 90%+ client retention across Fortune 500 accounts.</p>
+        <div class="mt-6">
+          <TimelineBar startYear={2018} endYear={2021} milestones={pivotreeMilestones} />
+        </div>
+      </div>
+
+      <!-- Black Magic Consulting -->
+      <div class="relative">
+        <div class="absolute -left-[calc(2rem+9px)] top-1 size-4 rounded-full border-2 border-accent bg-background"></div>
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="text-lg font-semibold text-foreground">Black Magic Consulting</h3>
+          <span class="shrink-0 text-sm text-muted">2021 - Present</span>
+        </div>
+        <p class="text-sm text-accent">Managing Director</p>
+        <p class="mt-2 text-sm text-muted">Independent consulting practice focused on digital transformation for specialty manufacturing and strategic turnarounds in e-commerce and software businesses. Leveraging AI/ML for optimization.</p>
+        <div class="mt-6">
+          <TimelineBar startYear={2021} endYear={2025} milestones={bmcMilestones} />
+        </div>
       </div>
     </div>
   </div>
