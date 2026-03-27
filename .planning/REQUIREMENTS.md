@@ -66,8 +66,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### SEO
 
-- [ ] **SEO-01**: Page title, meta description, and canonical URL set
-- [ ] **SEO-02**: Open Graph tags (og:title, og:description, og:image) for LinkedIn/Slack link previews
+- [x] **SEO-01**: Page title, meta description, and canonical URL set
+- [x] **SEO-02**: Open Graph tags (og:title, og:description, og:image) for LinkedIn/Slack link previews
 - [ ] **SEO-03**: Semantic HTML with proper heading hierarchy and accessibility basics (alt text, ARIA labels, keyboard nav)
 
 ## v2 Requirements
@@ -135,8 +135,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WRITE-03 | Phase 2 | Complete |
 | CONTACT-01 | Phase 2 | Pending |
 | CONTACT-02 | Phase 2 | Pending |
-| SEO-01 | Phase 3 | Pending |
-| SEO-02 | Phase 3 | Pending |
+| SEO-01 | Phase 3 | Complete |
+| SEO-02 | Phase 3 | Complete |
 | SEO-03 | Phase 3 | Pending |
 
 **Coverage:**
