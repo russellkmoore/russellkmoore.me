@@ -20,16 +20,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Layout
 
-- [ ] **LAYOUT-01**: Layout.astro wraps all pages with consistent head, nav, and footer
-- [ ] **LAYOUT-02**: Sticky nav with name/logo left, section links right, hamburger menu on mobile
-- [ ] **LAYOUT-03**: Minimal footer with copyright + LinkedIn + GitHub icons
-- [ ] **LAYOUT-04**: Site is fully responsive across mobile, tablet, and desktop breakpoints
+- [x] **LAYOUT-01**: Layout.astro wraps all pages with consistent head, nav, and footer
+- [x] **LAYOUT-02**: Sticky nav with name/logo left, section links right, hamburger menu on mobile
+- [x] **LAYOUT-03**: Minimal footer with copyright + LinkedIn + GitHub icons
+- [x] **LAYOUT-04**: Site is fully responsive across mobile, tablet, and desktop breakpoints
 
 ### Components
 
-- [ ] **COMP-01**: Reusable Card.astro component with consistent styling
-- [ ] **COMP-02**: Reusable Badge.astro component for tech stack tags and status indicators
-- [ ] **COMP-03**: Reusable SectionHeader.astro component for section titles
+- [x] **COMP-01**: Reusable Card.astro component with consistent styling
+- [x] **COMP-02**: Reusable Badge.astro component for tech stack tags and status indicators
+- [x] **COMP-03**: Reusable SectionHeader.astro component for section titles
 
 ### Hero
 
@@ -113,13 +113,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-06 | Phase 1 | Complete |
 | INFRA-07 | Phase 1 | Complete |
 | INFRA-08 | Phase 1 | Complete |
-| LAYOUT-01 | Phase 2 | Pending |
-| LAYOUT-02 | Phase 2 | Pending |
-| LAYOUT-03 | Phase 2 | Pending |
-| LAYOUT-04 | Phase 2 | Pending |
-| COMP-01 | Phase 2 | Pending |
-| COMP-02 | Phase 2 | Pending |
-| COMP-03 | Phase 2 | Pending |
+| LAYOUT-01 | Phase 2 | Complete |
+| LAYOUT-02 | Phase 2 | Complete |
+| LAYOUT-03 | Phase 2 | Complete |
+| LAYOUT-04 | Phase 2 | Complete |
+| COMP-01 | Phase 2 | Complete |
+| COMP-02 | Phase 2 | Complete |
+| COMP-03 | Phase 2 | Complete |
 | HERO-01 | Phase 2 | Pending |
 | HERO-02 | Phase 2 | Pending |
 | HERO-03 | Phase 2 | Pending |
