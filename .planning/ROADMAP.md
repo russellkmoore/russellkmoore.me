@@ -62,10 +62,11 @@ Plans:
   2. Sharing the URL on LinkedIn/Slack shows a rich preview with og:title, og:description, and og:image
   3. HTML uses semantic elements with proper heading hierarchy, alt text on images, ARIA labels, and keyboard navigability
   4. Lighthouse scores 95+ on Performance, Accessibility, Best Practices, and SEO
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md -- SEO meta tags (canonical, OG, Twitter Card), robots.txt, and hero animation speedup
+- [ ] 03-02-PLAN.md -- Accessibility polish (skip link, focus styles, keyboard nav), OG image, and Lighthouse verification
 
 ## Progress
 
@@ -76,4 +77,4 @@ Phases execute in numeric order: 1 -> 2 -> 3
 |-------|----------------|--------|-----------|
 | 1. Foundation & Scaffolding | 2/2 | Complete | 2026-03-27 |
 | 2. Components & Content | 2/4 | In Progress|  |
-| 3. Polish & Production | 0/1 | Not started | - |
+| 3. Polish & Production | 0/2 | Not started | - |
