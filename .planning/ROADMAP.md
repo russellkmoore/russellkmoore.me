@@ -71,20 +71,22 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Scaffolding | 2/2 | Complete | 2026-03-27 |
 | 2. Components & Content | 2/4 | In Progress|  |
 | 3. Polish & Production | 2/2 | Complete   | 2026-03-27 |
+| 4. Career Timelines | 0/2 | Planned | |
 
 ### Phase 4: Career timelines with researched accomplishments and graphical timeline components for AT&T, Spark::red, and Pivotree
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Replace placeholder Career section with accurate resume-based content and per-company horizontal accomplishment timelines for AT&T, Spark::red, Pivotree, and Black Magic Consulting
+**Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 3
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 4 to break down)
+- [ ] 04-01-PLAN.md -- Create reusable TimelineBar and MilestoneNode components for horizontal accomplishment timelines
+- [ ] 04-02-PLAN.md -- Rewrite Career.astro with correct resume data for 4 companies and wire in timeline components
