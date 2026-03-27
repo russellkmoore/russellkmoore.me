@@ -8,6 +8,9 @@ const publishedPosts = await getCollection("writing", ({ data }) => !data.draft)
 const sortedPosts = publishedPosts.sort(
   (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
 );
+
+// Collect all unique tags
+const allTags = [...new Set(sortedPosts.flatMap((p) => p.data.tags))].sort();
 ---
 
 <Layout
@@ -18,16 +21,37 @@ const sortedPosts = publishedPosts.sort(
     <div class="mx-auto max-w-4xl px-6">
       <SectionHeader title="Writing" subtitle="Thoughts on building" />
 
+      {allTags.length > 0 && (
+        <div class="mb-8 flex flex-wrap gap-2" id="tag-filters">
+          <button
+            class="tag-btn rounded-full border border-accent bg-accent/20 px-3 py-1 text-xs text-accent transition-colors"
+            data-tag="all"
+          >
+            All
+          </button>
+          {allTags.map((tag) => (
+            <button
+              class="tag-btn rounded-full border border-white/10 px-3 py-1 text-xs text-muted transition-colors hover:border-accent hover:text-accent"
+              data-tag={tag}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
+
       {sortedPosts.length > 0 ? (
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6" id="posts-list">
           {sortedPosts.map((post) => (
-            <PostCard
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              tags={post.data.tags}
-              href={"/writing/" + post.id}
-            />
+            <div class="post-item" data-tags={post.data.tags.join(",")}>
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                href={"/writing/" + post.id}
+              />
+            </div>
           ))}
         </div>
       ) : (
@@ -36,3 +60,32 @@ const sortedPosts = publishedPosts.sort(
     </div>
   </section>
 </Layout>
+
+<script>
+  const buttons = document.querySelectorAll(".tag-btn");
+  const posts = document.querySelectorAll(".post-item");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tag = (btn as HTMLElement).dataset.tag;
+
+      // Update active button styles
+      buttons.forEach((b) => {
+        b.classList.remove("border-accent", "bg-accent/20", "text-accent");
+        b.classList.add("border-white/10", "text-muted");
+      });
+      btn.classList.remove("border-white/10", "text-muted");
+      btn.classList.add("border-accent", "bg-accent/20", "text-accent");
+
+      // Filter posts
+      posts.forEach((post) => {
+        const postTags = (post as HTMLElement).dataset.tags ?? "";
+        if (tag === "all" || postTags.split(",").includes(tag!)) {
+          (post as HTMLElement).style.display = "";
+        } else {
+          (post as HTMLElement).style.display = "none";
+        }
+      });
+    });
+  });
+</script>
