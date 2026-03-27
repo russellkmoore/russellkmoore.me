@@ -49,8 +49,8 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md -- Install astro-icon, create reusable components (Card, Badge, SectionHeader), build Nav with mobile menu, Footer, and update Layout
-- [x] 02-02-PLAN.md -- Hero section with mesh gradient and CTAs, About section with narrative and stats, Contact section with links
-- [ ] 02-03-PLAN.md -- Projects section from content collections, Career timeline, Writing section with coming-soon state
+- [ ] 02-02-PLAN.md -- Hero section with mesh gradient and CTAs, About section with narrative and stats, Contact section with links
+- [x] 02-03-PLAN.md -- Projects section from content collections, Career timeline, Writing section with coming-soon state
 - [ ] 02-04-PLAN.md -- Compose index.astro with all sections and visual verification checkpoint
 
 ### Phase 3: Polish & Production

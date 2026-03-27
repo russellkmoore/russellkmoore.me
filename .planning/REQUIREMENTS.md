@@ -33,36 +33,36 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Hero
 
-- [x] **HERO-01**: Hero displays name and tagline (tech leadership angle)
-- [x] **HERO-02**: Two CTA buttons: "See My Work" anchors to Projects, "Let's Talk" anchors to Contact
-- [x] **HERO-03**: Subtle animated gradient background (performant, not flashy)
+- [ ] **HERO-01**: Hero displays name and tagline (tech leadership angle)
+- [ ] **HERO-02**: Two CTA buttons: "See My Work" anchors to Projects, "Let's Talk" anchors to Contact
+- [ ] **HERO-03**: Subtle animated gradient background (performant, not flashy)
 
 ### About
 
-- [x] **ABOUT-01**: Short narrative paragraph about Russell
-- [x] **ABOUT-02**: 4 stats cards displaying: 20+ Years, $2B+ Platform Scale, $13M ARR Built & Acquired, 200+ Global Team
+- [ ] **ABOUT-01**: Short narrative paragraph about Russell
+- [ ] **ABOUT-02**: 4 stats cards displaying: 20+ Years, $2B+ Platform Scale, $13M ARR Built & Acquired, 200+ Global Team
 
 ### Projects
 
-- [ ] **PROJ-01**: Card grid displaying projects from content collection
-- [ ] **PROJ-02**: Each project card shows title, description, tech stack tags (Badge), and status badge (Live / In Development)
-- [ ] **PROJ-03**: Featured projects visually distinguished or prioritized in display order
+- [x] **PROJ-01**: Card grid displaying projects from content collection
+- [x] **PROJ-02**: Each project card shows title, description, tech stack tags (Badge), and status badge (Live / In Development)
+- [x] **PROJ-03**: Featured projects visually distinguished or prioritized in display order
 
 ### Career
 
-- [ ] **CAREER-01**: 3 highlight cards for AT&T, Spark::red, and Pivotree
-- [ ] **CAREER-02**: Each card shows company name, role context, and key quantified metrics
+- [x] **CAREER-01**: 3 highlight cards for AT&T, Spark::red, and Pivotree
+- [x] **CAREER-02**: Each card shows company name, role context, and key quantified metrics
 
 ### Writing
 
-- [ ] **WRITE-01**: Card grid displaying published writing from content collection
-- [ ] **WRITE-02**: Graceful "coming soon" state when no published posts exist (all drafts filtered out)
-- [ ] **WRITE-03**: Draft entries (draft:true) never render on the site
+- [x] **WRITE-01**: Card grid displaying published writing from content collection
+- [x] **WRITE-02**: Graceful "coming soon" state when no published posts exist (all drafts filtered out)
+- [x] **WRITE-03**: Draft entries (draft:true) never render on the site
 
 ### Contact
 
-- [x] **CONTACT-01**: Email link and LinkedIn link displayed
-- [x] **CONTACT-02**: Brief "what I'm open to" copy (full-time roles, consulting, advising, interesting conversations)
+- [ ] **CONTACT-01**: Email link and LinkedIn link displayed
+- [ ] **CONTACT-02**: Brief "what I'm open to" copy (full-time roles, consulting, advising, interesting conversations)
 
 ### SEO
 
@@ -120,21 +120,21 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COMP-01 | Phase 2 | Complete |
 | COMP-02 | Phase 2 | Complete |
 | COMP-03 | Phase 2 | Complete |
-| HERO-01 | Phase 2 | Complete |
-| HERO-02 | Phase 2 | Complete |
-| HERO-03 | Phase 2 | Complete |
-| ABOUT-01 | Phase 2 | Complete |
-| ABOUT-02 | Phase 2 | Complete |
-| PROJ-01 | Phase 2 | Pending |
-| PROJ-02 | Phase 2 | Pending |
-| PROJ-03 | Phase 2 | Pending |
-| CAREER-01 | Phase 2 | Pending |
-| CAREER-02 | Phase 2 | Pending |
-| WRITE-01 | Phase 2 | Pending |
-| WRITE-02 | Phase 2 | Pending |
-| WRITE-03 | Phase 2 | Pending |
-| CONTACT-01 | Phase 2 | Complete |
-| CONTACT-02 | Phase 2 | Complete |
+| HERO-01 | Phase 2 | Pending |
+| HERO-02 | Phase 2 | Pending |
+| HERO-03 | Phase 2 | Pending |
+| ABOUT-01 | Phase 2 | Pending |
+| ABOUT-02 | Phase 2 | Pending |
+| PROJ-01 | Phase 2 | Complete |
+| PROJ-02 | Phase 2 | Complete |
+| PROJ-03 | Phase 2 | Complete |
+| CAREER-01 | Phase 2 | Complete |
+| CAREER-02 | Phase 2 | Complete |
+| WRITE-01 | Phase 2 | Complete |
+| WRITE-02 | Phase 2 | Complete |
+| WRITE-03 | Phase 2 | Complete |
+| CONTACT-01 | Phase 2 | Pending |
+| CONTACT-02 | Phase 2 | Pending |
 | SEO-01 | Phase 3 | Pending |
 | SEO-02 | Phase 3 | Pending |
 | SEO-03 | Phase 3 | Pending |
