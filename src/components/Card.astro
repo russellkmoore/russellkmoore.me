@@ -1,0 +1,18 @@
+---
+interface Props {
+  variant?: "default" | "featured";
+  class?: string;
+}
+
+const { variant = "default", class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "rounded-lg border border-white/10 bg-white/5 p-6 transition-colors",
+    { "p-8": variant === "featured" },
+    className,
+  ]}
+>
+  <slot />
+</div>

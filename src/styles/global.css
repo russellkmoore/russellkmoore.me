@@ -10,3 +10,8 @@
   --color-accent-hover: #8b5cf6;
   --font-sans: "Geist Variable", "Inter", system-ui, sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
