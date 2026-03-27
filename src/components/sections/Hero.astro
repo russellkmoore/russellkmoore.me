@@ -2,9 +2,11 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<section class="relative flex min-h-[65vh] items-center justify-center overflow-hidden">
+<section class="relative flex min-h-[65vh] items-center justify-center">
   <!-- Mesh gradient background (D-02) -->
   <div class="hero-gradient" aria-hidden="true"></div>
+  <!-- Bottom fade to blend into next section -->
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-background" aria-hidden="true"></div>
 
   <!-- Content -->
   <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
@@ -49,42 +51,69 @@ import { Icon } from "astro-icon/components";
     z-index: 0;
   }
 
-  .hero-gradient::before {
+  .hero-gradient::before,
+  .hero-gradient::after {
     content: "";
     position: absolute;
     inset: -50%;
-    background:
-      radial-gradient(
-        circle at 30% 40%,
-        rgba(124, 58, 237, 0.20) 0%,
-        transparent 55%
-      ),
-      radial-gradient(
-        circle at 70% 60%,
-        rgba(59, 130, 246, 0.12) 0%,
-        transparent 55%
-      ),
-      radial-gradient(
-        circle at 50% 50%,
-        rgba(124, 58, 237, 0.08) 0%,
-        transparent 70%
-      );
-    animation: meshMove 10s ease-in-out infinite alternate;
     will-change: transform;
   }
 
-  @keyframes meshMove {
+  .hero-gradient::before {
+    background:
+      radial-gradient(
+        circle 500px at 30% 40%,
+        rgba(167, 100, 255, 0.4) 0%,
+        rgba(124, 58, 237, 0.15) 50%,
+        transparent 80%
+      ),
+      radial-gradient(
+        circle 400px at 75% 60%,
+        rgba(96, 165, 250, 0.3) 0%,
+        rgba(59, 130, 246, 0.1) 50%,
+        transparent 80%
+      );
+    animation: meshMove1 8s ease-in-out infinite alternate;
+  }
+
+  .hero-gradient::after {
+    background:
+      radial-gradient(
+        circle 450px at 65% 25%,
+        rgba(192, 132, 252, 0.3) 0%,
+        rgba(139, 92, 246, 0.08) 50%,
+        transparent 75%
+      ),
+      radial-gradient(
+        circle 350px at 30% 75%,
+        rgba(96, 165, 250, 0.25) 0%,
+        rgba(59, 130, 246, 0.06) 50%,
+        transparent 75%
+      );
+    animation: meshMove2 12s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes meshMove1 {
     0% {
-      transform: translate(0, 0) scale(1);
+      transform: translate(0, 0) scale(1) rotate(0deg);
     }
-    33% {
-      transform: translate(2%, -3%) scale(1.02);
-    }
-    66% {
-      transform: translate(-2%, 2%) scale(0.98);
+    50% {
+      transform: translate(8%, -6%) scale(1.08) rotate(2deg);
     }
     100% {
-      transform: translate(1%, -1%) scale(1.01);
+      transform: translate(-5%, 4%) scale(0.95) rotate(-1deg);
+    }
+  }
+
+  @keyframes meshMove2 {
+    0% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+      transform: translate(-6%, 5%) scale(1.05) rotate(-2deg);
+    }
+    100% {
+      transform: translate(4%, -3%) scale(0.97) rotate(1deg);
     }
   }
 </style>
