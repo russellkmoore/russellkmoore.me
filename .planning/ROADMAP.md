@@ -44,13 +44,14 @@ Plans:
   3. Projects section displays Mercora and RecompAI cards with tech stack tags, status badges, and descriptions from content collections
   4. Writing section shows graceful "coming soon" state (all seed entries are draft:true and never render)
   5. Site is fully usable on mobile with hamburger menu, proper tap targets, and no horizontal overflow
-**Plans**: TBD
+**Plans**: 4 plans
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Install astro-icon, create reusable components (Card, Badge, SectionHeader), build Nav with mobile menu, Footer, and update Layout
+- [ ] 02-02-PLAN.md -- Hero section with mesh gradient and CTAs, About section with narrative and stats, Contact section with links
+- [ ] 02-03-PLAN.md -- Projects section from content collections, Career timeline, Writing section with coming-soon state
+- [ ] 02-04-PLAN.md -- Compose index.astro with all sections and visual verification checkpoint
 
 ### Phase 3: Polish & Production
 **Goal**: Site scores 95+ on Lighthouse, displays correct previews when shared on LinkedIn/Slack, and passes a production readiness checklist
@@ -73,6 +74,6 @@ Phases execute in numeric order: 1 -> 2 -> 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Scaffolding | 0/2 | Not started | - |
-| 2. Components & Content | 0/3 | Not started | - |
+| 1. Foundation & Scaffolding | 2/2 | Complete | 2026-03-27 |
+| 2. Components & Content | 0/4 | Not started | - |
 | 3. Polish & Production | 0/1 | Not started | - |
