@@ -1,0 +1,75 @@
+---
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+
+const domain = new URL(href).hostname.replace(/^www\./, "");
+
+let title = domain;
+let description = "";
+
+try {
+  const response = await fetch(href, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; AstroBot/1.0)" },
+    signal: AbortSignal.timeout(5000),
+  });
+
+  if (response.ok) {
+    const html = await response.text();
+
+    // Extract og:title, fallback to <title>
+    const ogTitleMatch = html.match(
+      /<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']+)["']/i
+    );
+    const titleTagMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+    title = ogTitleMatch?.[1] ?? titleTagMatch?.[1]?.trim() ?? domain;
+
+    // Extract og:description, fallback to meta description
+    const ogDescMatch = html.match(
+      /<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']+)["']/i
+    );
+    const metaDescMatch = html.match(
+      /<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i
+    );
+    description = ogDescMatch?.[1] ?? metaDescMatch?.[1]?.trim() ?? "";
+  }
+} catch {
+  // Fetch failed — fallback to domain name as title, empty description
+}
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group my-4 block rounded-lg border border-white/10 bg-white/5 p-4 no-underline transition-colors hover:border-accent/50 hover:bg-white/8 not-prose"
+>
+  <span class="block font-semibold text-foreground transition-colors group-hover:text-accent">
+    {title}
+  </span>
+  {description && (
+    <span class="mt-1 block text-sm text-muted line-clamp-2">{description}</span>
+  )}
+  <span class="mt-2 flex items-center gap-1 text-xs text-muted/70">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="inline-block"
+      aria-hidden="true"
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+    {domain}
+  </span>
+</a>
