@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import * as mdxComponents from "../../components/mdx";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -21,7 +22,7 @@ const { Content } = await render(project);
 ---
 
 <ProjectLayout frontmatter={project.data}>
-  <Content />
+  <Content components={mdxComponents} />
 
   <!-- Prev/Next navigation -->
   <nav class="mt-12 flex items-center justify-between border-t border-white/10 pt-8 not-prose">

@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import { Icon } from "astro-icon/components";
 import PostLayout from "../../layouts/PostLayout.astro";
+import * as mdxComponents from "../../components/mdx";
 import PostCard from "../../components/PostCard.astro";
 
 export async function getStaticPaths() {
@@ -35,7 +36,7 @@ const shareUrl = encodeURIComponent(postUrl);
 ---
 
 <PostLayout frontmatter={post.data}>
-  <Content />
+  <Content components={mdxComponents} />
 
   <!-- Social share buttons -->
   <div class="mt-12 flex items-center gap-4 border-t border-white/10 pt-8 not-prose">
