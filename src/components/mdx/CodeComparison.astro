@@ -1,0 +1,38 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  before: string;
+  after: string;
+  lang?: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+
+const {
+  before,
+  after,
+  lang = "typescript",
+  beforeLabel = "Before",
+  afterLabel = "After",
+} = Astro.props;
+---
+
+<div class="not-prose my-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+  <div>
+    <span class="mb-2 block text-xs font-medium uppercase tracking-wider text-muted">
+      {beforeLabel}
+    </span>
+    <div class="overflow-hidden rounded-lg">
+      <Code code={before} lang={lang} theme="github-dark-default" />
+    </div>
+  </div>
+  <div>
+    <span class="mb-2 block text-xs font-medium uppercase tracking-wider text-muted">
+      {afterLabel}
+    </span>
+    <div class="overflow-hidden rounded-lg">
+      <Code code={after} lang={lang} theme="github-dark-default" />
+    </div>
+  </div>
+</div>
