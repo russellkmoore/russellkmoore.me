@@ -1,7 +1,7 @@
 ---
 title: "Five Models, Five Jobs: Multi-Model Orchestration on Cloudflare Workers"
 description: "Why a single model can't do everything well, and how I route across five different models based on task requirements in a production AI application."
-pubDate: 2026-03-24
+pubDate: 2026-03-10
 tags: ["AI", "Architecture", "Cloudflare Workers"]
 draft: false
 ---

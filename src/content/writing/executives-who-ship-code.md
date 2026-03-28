@@ -1,7 +1,7 @@
 ---
 title: "The Case for Executives Who Still Ship Code"
 description: "Why hands-on technical work makes you a better leader, not a worse one — and how the industry got this backwards."
-pubDate: 2026-03-23
+pubDate: 2026-02-24
 tags: ["Leadership", "Engineering Culture"]
 draft: false
 ---

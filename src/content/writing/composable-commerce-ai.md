@@ -1,7 +1,7 @@
 ---
 title: "Composable Commerce in the AI Era"
 description: "How twenty years of e-commerce platform evolution led to a moment where AI agents are the next composable interface — and what that means for platform builders."
-pubDate: 2026-03-22
+pubDate: 2026-02-10
 tags: ["AI", "Commerce", "Architecture", "MCP"]
 draft: false
 ---

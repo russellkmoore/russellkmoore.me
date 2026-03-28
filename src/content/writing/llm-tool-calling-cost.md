@@ -1,7 +1,7 @@
 ---
 title: "The Real Cost of LLM Tool Calling"
 description: "What I learned building guardrails around tool-calling models that narrate instead of act, log data on hypothetical questions, and get stuck in infinite loops."
-pubDate: 2026-03-25
+pubDate: 2026-03-19
 tags: ["AI", "Architecture", "Cloudflare Workers"]
 draft: false
 ---
