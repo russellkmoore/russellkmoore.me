@@ -1,0 +1,227 @@
+---
+title: "MDX Component Guide"
+description: "Reference guide for all custom MDX components available in writing and project pages."
+pubDate: 2026-03-27
+tags: ["Reference", "Components"]
+draft: true
+---
+
+This is a reference guide for all 6 custom MDX components. Each component is auto-registered — just use the tag directly in any `.mdx` file, no imports needed.
+
+---
+
+## Callout
+
+Styled alert boxes with 4 variants. Use for tips, warnings, important notes, and general information.
+
+### Variants
+
+<Callout type="info">
+**Info** — Use for supplementary context or background information that helps the reader understand the topic better.
+</Callout>
+
+<Callout type="tip">
+**Tip** — Use for actionable advice, best practices, or recommendations the reader can apply immediately.
+</Callout>
+
+<Callout type="warning">
+**Warning** — Use for gotchas, common mistakes, or things that could cause problems if ignored.
+</Callout>
+
+<Callout type="note">
+**Note** — Use for asides, tangential thoughts, or meta-commentary that doesn't fit the main flow.
+</Callout>
+
+### Usage
+
+```mdx
+<Callout type="tip">
+Your content here. **Markdown** works inside callouts.
+</Callout>
+```
+
+**Props:**
+- `type` — `"info"` | `"tip"` | `"warning"` | `"note"` (required)
+
+---
+
+## Figure
+
+Image with semantic `<figcaption>`. Use instead of raw `![alt](src)` when you need a caption or custom styling.
+
+<Figure src="/og-image.png" caption="Example figure with caption — this renders as a proper HTML figure element" />
+
+### Usage
+
+```mdx
+<Figure
+  src="/path/to/image.png"
+  caption="Your caption here"
+  width="600"
+/>
+```
+
+**Props:**
+- `src` — Image path (required)
+- `caption` — Caption text (optional)
+- `alt` — Alt text, defaults to caption (optional)
+- `width` — Max width in pixels (optional)
+
+---
+
+## CodeComparison
+
+Side-by-side code blocks with labels. Great for before/after refactoring, migration guides, or comparing approaches. Stacks vertically on mobile.
+
+<CodeComparison
+  beforeLabel="Before: Callback Hell"
+  afterLabel="After: Async/Await"
+  before={`fetchUser(id, (err, user) => {
+  if (err) throw err;
+  fetchPosts(user.id, (err, posts) => {
+    if (err) throw err;
+    fetchComments(posts[0].id,
+      (err, comments) => {
+        if (err) throw err;
+        render(comments);
+      }
+    );
+  });
+});`}
+  after={`const user = await fetchUser(id);
+const posts = await fetchPosts(user.id);
+const comments = await fetchComments(
+  posts[0].id
+);
+render(comments);`}
+  lang="javascript"
+/>
+
+### Usage
+
+```mdx
+<CodeComparison
+  beforeLabel="Before"
+  afterLabel="After"
+  before={`your code here`}
+  after={`your code here`}
+  lang="typescript"
+/>
+```
+
+**Props:**
+- `before` — Code string for left panel (required)
+- `after` — Code string for right panel (required)
+- `lang` — Language for syntax highlighting (default: `"typescript"`)
+- `beforeLabel` — Left panel label (default: `"Before"`)
+- `afterLabel` — Right panel label (default: `"After"`)
+
+---
+
+## ScreenshotCarousel
+
+Horizontal scrollable image gallery with arrow navigation and click-to-lightbox. Use for product screenshots, UI walkthroughs, or step-by-step visual guides.
+
+<ScreenshotCarousel
+  images={[
+    { src: "/og-image.png", caption: "First screenshot — click to view full size" },
+    { src: "/favicon.svg", caption: "Second screenshot — supports any image format" },
+    { src: "/og-image.png", caption: "Third screenshot — arrows navigate between images" },
+  ]}
+/>
+
+### Usage
+
+```mdx
+<ScreenshotCarousel
+  images={[
+    { src: "/path/to/image1.png", caption: "First image" },
+    { src: "/path/to/image2.png", caption: "Second image" },
+    { src: "/path/to/image3.png" },
+  ]}
+/>
+```
+
+**Props:**
+- `images` — Array of `{ src: string, caption?: string }` (required)
+
+**Interactions:**
+- Arrow buttons navigate between images
+- Click any image to open in full-screen lightbox
+- Press Escape or click backdrop to close lightbox
+
+---
+
+## InteractiveScreenshot
+
+Image with numbered pulsing hotspot dots. Hover (desktop) or tap (mobile) to reveal detail tooltips. Use for architecture diagrams, UI annotations, or feature callouts.
+
+<InteractiveScreenshot
+  src="/og-image.png"
+  alt="Example interactive screenshot"
+  hotspots={[
+    { x: 15, y: 40, label: "Navigation", detail: "Sticky nav with transparent-to-solid transition on scroll. Section links on desktop, hamburger menu on mobile." },
+    { x: 45, y: 30, label: "Hero Section", detail: "Animated mesh gradient background with two independent layers moving at different speeds for organic motion." },
+    { x: 75, y: 50, label: "CTA Links", detail: "Text links with arrow icons instead of buttons — minimalist linear.app energy." },
+    { x: 50, y: 80, label: "Dark Theme", detail: "Background #0a0a0f with violet accent #a78bfa. WCAG AA contrast ratio 7.26:1." },
+  ]}
+/>
+
+### Usage
+
+```mdx
+<InteractiveScreenshot
+  src="/path/to/screenshot.png"
+  alt="Description of the image"
+  hotspots={[
+    { x: 20, y: 30, label: "Feature Name", detail: "Detailed explanation..." },
+    { x: 60, y: 50, label: "Another Feature", detail: "More details..." },
+  ]}
+/>
+```
+
+**Props:**
+- `src` — Image path (required)
+- `alt` — Alt text (optional)
+- `hotspots` — Array of `{ x: number, y: number, label: string, detail: string }` (required)
+  - `x`, `y` — Position as percentage (0-100) from top-left
+
+**Interactions:**
+- Hover over numbered dots to see tooltip (desktop)
+- Tap dots to toggle tooltip (mobile)
+- Tab through dots with keyboard (accessible)
+
+---
+
+## LinkCard
+
+Rich preview card for external links. Fetches OG metadata (title, description) at build time. Use for referencing external resources, documentation, or related projects.
+
+<LinkCard href="https://astro.build" />
+
+<LinkCard href="https://modelcontextprotocol.io" />
+
+### Usage
+
+```mdx
+<LinkCard href="https://example.com" />
+```
+
+**Props:**
+- `href` — URL to link to (required)
+
+**Behavior:**
+- Fetches `og:title` and `og:description` at build time (static output safe)
+- Falls back to URL domain if metadata unavailable
+- Opens in new tab
+- 3-second fetch timeout to prevent build hangs
+
+---
+
+## Tips
+
+- All components respect the dark theme automatically
+- Components work in both `/writing/` and `/projects/` pages
+- No imports needed — components are auto-registered via the barrel export
+- Markdown works inside `Callout` — use **bold**, *italic*, `code`, and links
+- For `CodeComparison`, use template literals (backticks) to pass multi-line code strings
