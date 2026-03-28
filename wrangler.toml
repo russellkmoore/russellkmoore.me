@@ -1,5 +1,10 @@
 name = "russellkmoore-me"
 compatibility_date = "2026-03-26"
 
+routes = [
+  { pattern = "russellkmoore.me", custom_domain = true },
+  { pattern = "www.russellkmoore.me", custom_domain = true }
+]
+
 [assets]
 directory = "./dist"
