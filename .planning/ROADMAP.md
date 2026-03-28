@@ -71,7 +71,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -80,6 +80,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 3. Polish & Production | 2/2 | Complete   | 2026-03-27 |
 | 4. Career Timelines | 2/2 | Complete   | 2026-03-27 |
 | 5. Writing/Blog System | 2/3 | In Progress|  |
+| 6. Project Detail Pages | 2/2 | Complete | 2026-03-27 |
 
 ### Phase 4: Career timelines with researched accomplishments and graphical timeline components for AT&T, Spark::red, and Pivotree
 
@@ -115,12 +116,14 @@ Plans:
 - [x] 06-01-PLAN.md -- Update project schema for MDX + images, create ProjectLayout, dynamic route, and update homepage cards with detail links
 - [x] 06-02-PLAN.md -- Convert all 7 project .md files to .mdx with case study content
 
-### Phase 7: MDX component library — ScreenshotCarousel, InteractiveScreenshot, Callout, CodeComparison, Figure, and LinkCard for use in writing and project pages
+### Phase 7: MDX component library -- ScreenshotCarousel, InteractiveScreenshot, Callout, CodeComparison, Figure, and LinkCard for use in writing and project pages
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** 6 reusable Astro MDX components (Callout, Figure, CodeComparison, ScreenshotCarousel, InteractiveScreenshot, LinkCard) with barrel export and auto-registration in project and writing page templates -- all vanilla JS, dark theme compatible, no framework dependencies
+**Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 6
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 7 to break down)
+- [ ] 07-01-PLAN.md -- Create Callout, Figure, CodeComparison components and barrel export file
+- [ ] 07-02-PLAN.md -- Create ScreenshotCarousel with lightbox and InteractiveScreenshot with hotspot tooltips
+- [ ] 07-03-PLAN.md -- Create LinkCard with build-time metadata fetching, complete barrel export, and wire auto-registration into page templates
