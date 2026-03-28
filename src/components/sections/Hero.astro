@@ -1,29 +1,69 @@
 ---
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import headshot from "../../assets/headshot.jpeg";
+import Card from "../Card.astro";
 ---
 
 <section class="relative flex min-h-[65vh] items-center justify-center">
-  <!-- Mesh gradient background (D-02) -->
+  <!-- Mesh gradient background -->
   <div class="hero-gradient" aria-hidden="true"></div>
   <!-- Bottom fade to blend into next section -->
   <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-linear-to-b from-transparent to-background" aria-hidden="true"></div>
 
   <!-- Content -->
-  <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
-    <h1 class="text-5xl font-bold tracking-tight text-foreground md:text-6xl">
-      Russell Moore
-    </h1>
-    <p class="mx-auto mt-6 max-w-2xl text-xl text-muted md:text-2xl">
-      Building products at the intersection of AI and commerce
-    </p>
+  <div class="relative z-10 mx-auto max-w-4xl px-6 py-24">
+    <!-- Headshot + narrative -->
+    <div class="flex flex-col items-start gap-8 md:flex-row md:items-center">
+      <Image
+        src={headshot}
+        alt="Russell Moore"
+        width={160}
+        height={160}
+        class="size-40 shrink-0 rounded-full object-cover ring-2 ring-white/10"
+      />
+      <div>
+        <h1 class="text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+          Russell Moore
+        </h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+          I build AI-powered products and lead engineering teams that ship at scale.
+          Over two decades, I've taken platforms from zero to $2B+ in transaction
+          volume, built and acquired $13M in ARR, and led distributed teams of 200+
+          engineers across three continents. Today, I'm focused on the intersection
+          of AI and commerce — building tools that make complex systems intelligent
+          and accessible.
+        </p>
+      </div>
+    </div>
 
-    <!-- CTA text links with arrows (D-03) -->
+    <!-- Stats cards -->
+    <div class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+      <Card>
+        <p class="text-3xl font-semibold text-foreground">20+</p>
+        <p class="mt-1 text-sm text-muted">Years Experience</p>
+      </Card>
+      <Card>
+        <p class="text-3xl font-semibold text-foreground">$2B+</p>
+        <p class="mt-1 text-sm text-muted">Platform Scale</p>
+      </Card>
+      <Card>
+        <p class="text-3xl font-semibold text-foreground">$13M</p>
+        <p class="mt-1 text-sm text-muted">ARR Built & Acquired</p>
+      </Card>
+      <Card>
+        <p class="text-3xl font-semibold text-foreground">200+</p>
+        <p class="mt-1 text-sm text-muted">Global Team</p>
+      </Card>
+    </div>
+
+    <!-- CTA links below stats -->
     <div class="mt-10 flex items-center justify-center gap-8">
       <a
         href="#projects"
         class="group inline-flex items-center gap-2 text-foreground transition-colors hover:text-accent"
       >
-        See My Work
+        Latest Projects
         <Icon
           name="lucide:arrow-right"
           class="size-4 transition-transform group-hover:translate-x-1"

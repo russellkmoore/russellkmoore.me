@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import SectionHeader from "../SectionHeader.astro";
 import TimelineBar from "../timeline/TimelineBar.astro";
 
@@ -243,6 +244,18 @@ const bmcMilestones = [
           <TimelineBar startYear={2021} endYear={2026} milestones={bmcMilestones} />
         </div>
       </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a
+        href="/Russell_Moore_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group inline-flex items-center gap-2 text-accent transition-colors hover:text-accent-hover"
+      >
+        Download Full CV
+        <Icon name="lucide:download" class="size-4 transition-transform group-hover:translate-y-0.5" />
+      </a>
     </div>
   </div>
 </section>
