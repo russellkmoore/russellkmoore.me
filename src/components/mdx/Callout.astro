@@ -1,0 +1,56 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  type?: "info" | "warning" | "tip" | "note";
+}
+
+const { type = "info" } = Astro.props;
+
+const variants = {
+  info: {
+    border: "border-blue-500",
+    bg: "bg-blue-500/10",
+    icon: "lucide:info",
+    iconColor: "text-blue-500",
+  },
+  warning: {
+    border: "border-amber-500",
+    bg: "bg-amber-500/10",
+    icon: "lucide:alert-triangle",
+    iconColor: "text-amber-500",
+  },
+  tip: {
+    border: "border-emerald-500",
+    bg: "bg-emerald-500/10",
+    icon: "lucide:lightbulb",
+    iconColor: "text-emerald-500",
+  },
+  note: {
+    border: "border-zinc-500",
+    bg: "bg-zinc-500/10",
+    icon: "lucide:pencil",
+    iconColor: "text-zinc-500",
+  },
+} as const;
+
+const variant = variants[type];
+---
+
+<div
+  class:list={[
+    "my-6 rounded-lg border-l-4 p-4",
+    variant.border,
+    variant.bg,
+  ]}
+>
+  <div class="flex gap-3">
+    <Icon
+      name={variant.icon}
+      class:list={["size-5 shrink-0", variant.iconColor]}
+    />
+    <div class="min-w-0 flex-1">
+      <slot />
+    </div>
+  </div>
+</div>
