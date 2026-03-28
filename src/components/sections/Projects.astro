@@ -17,7 +17,7 @@ const other = sortedProjects.filter((p) => !p.data.featured);
     <SectionHeader title="Projects" subtitle="What I'm building" />
 
     <!-- Featured projects: larger cards -->
-    <div style="display:grid;gap:1.5rem;grid-template-columns:1fr 1fr;">
+    <div class="featured-projects">
       {featured.map((project) => (
         <div class="relative cursor-pointer project-card" data-href={`/projects/${project.id}`}>
         <Card variant="featured">
@@ -92,6 +92,20 @@ const other = sortedProjects.filter((p) => !p.data.featured);
     )}
   </div>
 </section>
+
+<style is:inline>
+  .featured-projects {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .featured-projects {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
 
 <script>
   document.querySelectorAll(".project-card").forEach((card) => {
