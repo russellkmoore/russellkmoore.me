@@ -114,3 +114,13 @@ Plans:
 Plans:
 - [x] 06-01-PLAN.md -- Update project schema for MDX + images, create ProjectLayout, dynamic route, and update homepage cards with detail links
 - [x] 06-02-PLAN.md -- Convert all 7 project .md files to .mdx with case study content
+
+### Phase 7: MDX component library — ScreenshotCarousel, InteractiveScreenshot, Callout, CodeComparison, Figure, and LinkCard for use in writing and project pages
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 6
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 7 to break down)

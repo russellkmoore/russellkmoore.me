@@ -13,13 +13,13 @@ const other = sortedProjects.filter((p) => !p.data.featured);
 ---
 
 <section id="projects" class="py-24">
-  <div class="mx-auto max-w-4xl px-6">
+  <div class="mx-auto max-w-5xl px-6">
     <SectionHeader title="Projects" subtitle="What I'm building" />
 
     <!-- Featured projects: larger cards -->
-    <div class="grid gap-6 md:grid-cols-2">
+    <div style="display:grid;gap:1.5rem;grid-template-columns:1fr 1fr;">
       {featured.map((project) => (
-        <a href={`/projects/${project.id}`} class="block">
+        <div class="relative cursor-pointer project-card" data-href={`/projects/${project.id}`}>
         <Card variant="featured">
           <div class="flex items-start justify-between">
             <h3 class="text-xl font-semibold text-foreground">{project.data.title}</h3>
@@ -33,26 +33,22 @@ const other = sortedProjects.filter((p) => !p.data.featured);
           </div>
           <div class="mt-4 flex items-center gap-4">
             {project.data.url && (
-              <span class="relative z-10">
-                <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
-                  Visit project
-                </a>
-              </span>
+              <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
+                Visit project
+              </a>
             )}
             {project.data.github && (
-              <span class="relative z-10">
-                <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
-                  <Icon name="lucide:github" class="size-4" />
-                  Source
-                </a>
-              </span>
+              <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
+                <Icon name="lucide:github" class="size-4" />
+                Source
+              </a>
             )}
           </div>
-          <span class="mt-4 inline-flex items-center gap-1 text-sm text-accent">
+          <a href={`/projects/${project.id}`} class="mt-4 inline-flex items-center gap-1 text-sm text-accent">
             View project <span aria-hidden="true">&rarr;</span>
-          </span>
+          </a>
         </Card>
-        </a>
+        </div>
       ))}
     </div>
 
@@ -60,7 +56,7 @@ const other = sortedProjects.filter((p) => !p.data.featured);
     {other.length > 0 && (
       <div class="mt-8 space-y-4">
         {other.map((project) => (
-          <a href={`/projects/${project.id}`} class="block">
+          <div class="cursor-pointer project-card" data-href={`/projects/${project.id}`}>
             <Card>
               <div class="flex items-center justify-between">
                 <div>
@@ -75,28 +71,34 @@ const other = sortedProjects.filter((p) => !p.data.featured);
                 ))}
                 <div class="ml-auto flex items-center gap-3">
                   {project.data.url && (
-                    <span class="relative z-10">
-                      <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
-                        <Icon name="lucide:external-link" class="size-3.5" />
-                      </a>
-                    </span>
+                    <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
+                      <Icon name="lucide:external-link" class="size-3.5" />
+                    </a>
                   )}
                   {project.data.github && (
-                    <span class="relative z-10">
-                      <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
-                        <Icon name="lucide:github" class="size-4" />
-                      </a>
-                    </span>
+                    <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
+                      <Icon name="lucide:github" class="size-4" />
+                    </a>
                   )}
-                  <span class="inline-flex items-center gap-1 text-sm text-accent">
+                  <a href={`/projects/${project.id}`} class="inline-flex items-center gap-1 text-sm text-accent">
                     View project <span aria-hidden="true">&rarr;</span>
-                  </span>
+                  </a>
                 </div>
               </div>
             </Card>
-          </a>
+          </div>
         ))}
       </div>
     )}
   </div>
 </section>
+
+<script>
+  document.querySelectorAll(".project-card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a")) return;
+      const href = (card as HTMLElement).dataset.href;
+      if (href) window.location.href = href;
+    });
+  });
+</script>
