@@ -1,0 +1,183 @@
+---
+interface Props {
+  images: Array<{ src: string; alt?: string; caption?: string }>;
+}
+
+const { images } = Astro.props;
+---
+
+<div class="screenshot-carousel not-prose relative my-6" data-carousel>
+  <!-- Scroll container -->
+  <div
+    class="carousel-track flex gap-4 overflow-x-auto pb-4"
+    style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;"
+  >
+    {
+      images.map((img) => (
+        <div
+          class="carousel-slide flex-shrink-0"
+          style="scroll-snap-align: start; width: min(100%, 600px);"
+        >
+          <button
+            class="carousel-img-btn w-full cursor-zoom-in"
+            data-full-src={img.src}
+            data-full-alt={img.alt || img.caption || ""}
+            type="button"
+          >
+            <img
+              src={img.src}
+              alt={img.alt || img.caption || ""}
+              class="w-full rounded-lg border border-white/10"
+              loading="lazy"
+            />
+          </button>
+          {img.caption && (
+            <p class="mt-2 text-center text-sm text-muted">{img.caption}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Arrow buttons -->
+  <button
+    class="carousel-arrow carousel-prev absolute top-1/2 left-2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+    aria-label="Previous"
+    type="button"
+  >
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M10 12L6 8L10 4"></path>
+    </svg>
+  </button>
+  <button
+    class="carousel-arrow carousel-next absolute top-1/2 right-2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+    aria-label="Next"
+    type="button"
+  >
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M6 12L10 8L6 4"></path>
+    </svg>
+  </button>
+
+  <!-- Lightbox dialog (singleton per carousel) -->
+  <dialog
+    class="carousel-lightbox"
+    style="background: transparent; border: none; max-width: 90vw; max-height: 90vh; padding: 0;"
+  >
+    <div class="relative flex items-center justify-center">
+      <img
+        class="carousel-lightbox-img max-h-[85vh] max-w-full rounded-lg"
+        src=""
+        alt=""
+      />
+      <button
+        class="carousel-lightbox-close absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-2xl text-white transition-colors hover:bg-black/70"
+        aria-label="Close"
+        type="button">&times;</button
+      >
+    </div>
+  </dialog>
+</div>
+
+<style>
+  .carousel-lightbox::backdrop {
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .carousel-track::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .carousel-track::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+  }
+
+  .carousel-track::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+</style>
+
+<script>
+  document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector(
+      ".carousel-track"
+    ) as HTMLElement | null;
+    const prevBtn = carousel.querySelector(
+      ".carousel-prev"
+    ) as HTMLButtonElement | null;
+    const nextBtn = carousel.querySelector(
+      ".carousel-next"
+    ) as HTMLButtonElement | null;
+    const dialog = carousel.querySelector(
+      ".carousel-lightbox"
+    ) as HTMLDialogElement | null;
+    const lightboxImg = carousel.querySelector(
+      ".carousel-lightbox-img"
+    ) as HTMLImageElement | null;
+    const closeBtn = carousel.querySelector(
+      ".carousel-lightbox-close"
+    ) as HTMLButtonElement | null;
+
+    if (!track) return;
+
+    // Calculate scroll amount from first slide
+    const firstSlide = track.querySelector(".carousel-slide") as HTMLElement;
+    const scrollAmount = firstSlide ? firstSlide.offsetWidth + 16 : 300;
+
+    // Arrow navigation
+    prevBtn?.addEventListener("click", () => {
+      track.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      track.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    });
+
+    // Image click opens lightbox
+    carousel.querySelectorAll(".carousel-img-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!dialog || !lightboxImg) return;
+        const src = (btn as HTMLElement).dataset.fullSrc ?? "";
+        const alt = (btn as HTMLElement).dataset.fullAlt ?? "";
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
+        dialog.showModal();
+      });
+    });
+
+    // Close lightbox
+    closeBtn?.addEventListener("click", () => {
+      dialog?.close();
+    });
+
+    // Click on backdrop closes dialog
+    dialog?.addEventListener("click", (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+      }
+    });
+  });
+</script>

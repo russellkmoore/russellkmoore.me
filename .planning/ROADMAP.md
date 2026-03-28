@@ -124,6 +124,6 @@ Plans:
 **Plans:** 1/3 plans executed
 
 Plans:
-- [x] 07-01-PLAN.md -- Create Callout, Figure, CodeComparison components and barrel export file
-- [ ] 07-02-PLAN.md -- Create ScreenshotCarousel with lightbox and InteractiveScreenshot with hotspot tooltips
+- [ ] 07-01-PLAN.md -- Create Callout, Figure, CodeComparison components and barrel export file
+- [x] 07-02-PLAN.md -- Create ScreenshotCarousel with lightbox and InteractiveScreenshot with hotspot tooltips
 - [ ] 07-03-PLAN.md -- Create LinkCard with build-time metadata fetching, complete barrel export, and wire auto-registration into page templates

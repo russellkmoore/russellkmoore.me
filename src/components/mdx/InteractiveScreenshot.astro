@@ -1,0 +1,215 @@
+---
+interface Hotspot {
+  x: number;
+  y: number;
+  label: string;
+  detail: string;
+}
+
+interface Props {
+  src: string;
+  alt?: string;
+  hotspots: Hotspot[];
+}
+
+const { src, alt, hotspots } = Astro.props;
+---
+
+<div
+  class="interactive-screenshot not-prose relative my-6 inline-block"
+  data-interactive-screenshot
+>
+  <img
+    src={src}
+    alt={alt || ""}
+    class="w-full rounded-lg border border-white/10"
+    loading="lazy"
+  />
+
+  {
+    hotspots.map((hotspot, index) => (
+      <button
+        class="hotspot-dot absolute"
+        style={`left: ${hotspot.x}%; top: ${hotspot.y}%;`}
+        data-hotspot-label={hotspot.label}
+        data-hotspot-detail={hotspot.detail}
+        aria-label={hotspot.label}
+        tabindex="0"
+        type="button"
+      >
+        <span class="hotspot-number">{index + 1}</span>
+      </button>
+    ))
+  }
+</div>
+
+<style>
+  .hotspot-dot {
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(167, 139, 250, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0;
+    z-index: 1;
+  }
+
+  .hotspot-dot:hover,
+  .hotspot-dot:focus-visible {
+    background: rgba(167, 139, 250, 1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .hotspot-number {
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .hotspot-dot::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(167, 139, 250, 0.4);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+</style>
+
+<script>
+  const isTouch = "ontouchstart" in window;
+
+  // Create shared tooltip element
+  let tooltip = document.getElementById(
+    "interactive-screenshot-tooltip"
+  ) as HTMLDivElement | null;
+  if (!tooltip) {
+    tooltip = document.createElement("div");
+    tooltip.id = "interactive-screenshot-tooltip";
+    tooltip.style.cssText = `
+      position: fixed;
+      z-index: 9999;
+      background: #1a1a2e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      max-width: 250px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      display: none;
+    `;
+    tooltip.innerHTML = `
+      <p style="font-weight: 600; color: #a78bfa; font-size: 13px; margin: 0;"></p>
+      <p style="color: #e4e4e7; font-size: 12px; margin: 4px 0 0 0; line-height: 1.4;"></p>
+    `;
+    document.body.appendChild(tooltip);
+  }
+
+  let activeNode: HTMLElement | null = null;
+
+  function showHotspotTooltip(dot: HTMLElement) {
+    if (!tooltip) return;
+
+    const label = dot.dataset.hotspotLabel ?? "";
+    const detail = dot.dataset.hotspotDetail ?? "";
+
+    const labelEl = tooltip.querySelector("p:first-child") as HTMLElement;
+    const detailEl = tooltip.querySelector("p:last-child") as HTMLElement;
+    if (labelEl) labelEl.textContent = label;
+    if (detailEl) detailEl.textContent = detail;
+
+    tooltip.style.display = "block";
+
+    // Position using getBoundingClientRect
+    const rect = dot.getBoundingClientRect();
+    const ttRect = tooltip.getBoundingClientRect();
+    const ttWidth = ttRect.width || 200;
+    const ttHeight = ttRect.height || 60;
+
+    // Horizontal: center on dot, clamp to viewport
+    let left = rect.left + rect.width / 2 - ttWidth / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - ttWidth - 8));
+
+    // Vertical: above by default, below if not enough space
+    let top = rect.top - ttHeight - 8;
+    if (top < 8) {
+      top = rect.bottom + 8;
+    }
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+    tooltip.style.opacity = "1";
+
+    activeNode = dot;
+  }
+
+  function hideHotspotTooltip() {
+    if (!tooltip) return;
+    tooltip.style.opacity = "0";
+    setTimeout(() => {
+      if (tooltip) tooltip.style.display = "none";
+    }, 150);
+    activeNode = null;
+  }
+
+  document
+    .querySelectorAll("[data-interactive-screenshot]")
+    .forEach((container) => {
+      const dots = container.querySelectorAll(".hotspot-dot");
+
+      dots.forEach((dot) => {
+        const el = dot as HTMLElement;
+
+        if (isTouch) {
+          // Mobile: tap to toggle
+          el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (activeNode === el) {
+              hideHotspotTooltip();
+            } else {
+              showHotspotTooltip(el);
+            }
+          });
+        } else {
+          // Desktop: hover
+          el.addEventListener("mouseenter", () => showHotspotTooltip(el));
+          el.addEventListener("mouseleave", () => hideHotspotTooltip());
+        }
+
+        // Keyboard: focus/blur
+        el.addEventListener("focus", () => showHotspotTooltip(el));
+        el.addEventListener("blur", () => hideHotspotTooltip());
+      });
+    });
+
+  // Click outside hides tooltip on mobile
+  if (isTouch) {
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".hotspot-dot")) {
+        hideHotspotTooltip();
+      }
+    });
+  }
+</script>
