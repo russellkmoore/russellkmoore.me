@@ -33,19 +33,20 @@ const other = sortedProjects.filter((p) => !p.data.featured);
           </div>
           <div class="mt-4 flex items-center gap-4">
             {project.data.url && (
-              <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
-                Visit project
+              <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-accent hover:text-accent-hover transition-colors">
+                <Icon name="lucide:external-link" class="size-3.5" />
+                Visit Site
               </a>
             )}
             {project.data.github && (
-              <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
+              <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-accent hover:text-accent-hover transition-colors" aria-label={`${project.data.title} on GitHub`}>
                 <Icon name="lucide:github" class="size-4" />
-                Source
+                GitHub
               </a>
             )}
           </div>
-          <a href={`/projects/${project.id}`} class="mt-4 inline-flex items-center gap-1 text-sm text-accent">
-            View project <span aria-hidden="true">&rarr;</span>
+          <a href={`/projects/${project.id}`} class="mt-4 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors">
+            Read more <span aria-hidden="true">&rarr;</span>
           </a>
         </Card>
         </div>
@@ -71,17 +72,17 @@ const other = sortedProjects.filter((p) => !p.data.featured);
                 ))}
                 <div class="ml-auto flex items-center gap-3">
                   {project.data.url && (
-                    <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors">
+                    <a href={project.data.url} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1 text-sm text-accent hover:text-accent-hover transition-colors" aria-label={`${project.data.title} live site`}>
                       <Icon name="lucide:external-link" class="size-3.5" />
                     </a>
                   )}
                   {project.data.github && (
-                    <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors" aria-label={`${project.data.title} on GitHub`}>
+                    <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="relative z-10 inline-flex items-center gap-1.5 text-sm text-accent hover:text-accent-hover transition-colors" aria-label={`${project.data.title} on GitHub`}>
                       <Icon name="lucide:github" class="size-4" />
                     </a>
                   )}
-                  <a href={`/projects/${project.id}`} class="inline-flex items-center gap-1 text-sm text-accent">
-                    View project <span aria-hidden="true">&rarr;</span>
+                  <a href={`/projects/${project.id}`} class="inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors">
+                    Read more <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </div>
