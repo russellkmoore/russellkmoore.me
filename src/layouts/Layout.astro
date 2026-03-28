@@ -11,7 +11,7 @@ interface Props {
   ogType?: string;
 }
 
-const { title, description = "Russell Moore — Engineering Leader & Builder", ogType = "website" } = Astro.props;
+const { title, description = "Russell Moore — Technology Leader & Builder", ogType = "website" } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL("/og-image.png", Astro.site);
 ---
