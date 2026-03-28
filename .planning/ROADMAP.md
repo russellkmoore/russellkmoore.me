@@ -121,9 +121,9 @@ Plans:
 **Goal:** 6 reusable Astro MDX components (Callout, Figure, CodeComparison, ScreenshotCarousel, InteractiveScreenshot, LinkCard) with barrel export and auto-registration in project and writing page templates -- all vanilla JS, dark theme compatible, no framework dependencies
 **Requirements**: None (added phase, no mapped requirement IDs)
 **Depends on:** Phase 6
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 - [ ] 07-01-PLAN.md -- Create Callout, Figure, CodeComparison components and barrel export file
-- [ ] 07-02-PLAN.md -- Create ScreenshotCarousel with lightbox and InteractiveScreenshot with hotspot tooltips
+- [x] 07-02-PLAN.md -- Create ScreenshotCarousel with lightbox and InteractiveScreenshot with hotspot tooltips
 - [ ] 07-03-PLAN.md -- Create LinkCard with build-time metadata fetching, complete barrel export, and wire auto-registration into page templates
