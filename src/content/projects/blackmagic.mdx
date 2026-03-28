@@ -2,7 +2,7 @@
 title: "justblackmagic.com"
 description: "Professional consulting website built on Astro 5 and Cloudflare Workers with MDX blog, D1 database, contact form with Turnstile bot protection, and Zero Trust admin."
 stack: ["Astro 5", "Cloudflare Workers", "D1", "Tailwind CSS", "MDX", "Resend", "Turnstile"]
-status: "Live"
+status: "In Development"
 featured: false
 order: 6
 ---
@@ -10,6 +10,10 @@ order: 6
 ## Overview
 
 justblackmagic.com is a professional consulting website that doubles as a technical proving ground for the Astro 5 + Cloudflare Workers stack. The site combines static page generation for fast content delivery with server-side API routes for dynamic functionality -- contact form processing, database-backed content, and admin authentication.
+
+We wanted to have the same polish (or better) than the existing Wordpress-based site, but faster, lighter, better in every way, without wordpress hosting costs.
+
+We implimented a Tiptap-based inline editor so we could preview and publish content directly from the website. 
 
 What sets this project apart from a typical static site is the full edge infrastructure behind it. A D1 database powers dynamic content sections, Resend handles transactional email delivery, Cloudflare Turnstile protects the contact form from bots without CAPTCHAs, and Cloudflare Access Zero Trust gates the admin interface. The entire stack deploys across development, staging, and production environments with no traditional servers.
 

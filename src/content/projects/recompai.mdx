@@ -1,6 +1,6 @@
 ---
 title: "RecompAI"
-description: "AI-powered body recomposition coaching platform with meal tracking via text, photo, or voice, supplement protocol management, and personalized AI coaching conversations."
+description: "AI-powered body recomposition coaching platform with multi-agent architecture, multi-modal meal tracking, compound knowledge base, and custom tool-calling guardrails — built entirely on Cloudflare Workers."
 stack: ["Cloudflare Workers", "React 19", "Workers AI", "D1", "R2", "Vectorize", "Capacitor"]
 status: "In Development"
 featured: true
@@ -10,74 +10,120 @@ order: 2
 
 ## Overview
 
-RecompAI is an AI-powered body recomposition coaching platform that combines meal tracking, supplement management, and personalized coaching into a single application. The goal is to replace the fragmented stack of calorie counters, supplement reminders, and generic fitness apps with one platform that actually understands your full health context.
+RecompAI is an AI-powered body recomposition coaching platform that replaces the fragmented stack of calorie counters, supplement trackers, and generic fitness apps with a single system that understands your full health context. Users log meals via text, photo, or voice; manage peptide, TRT, and supplement protocols with dose escalation tracking; log workouts and body metrics; and get personalized coaching through natural conversation — all from one interface.
 
-What makes RecompAI different from existing trackers is multi-modal input. Instead of tediously searching a food database and logging every ingredient, users can snap a photo of their plate, describe a meal in a voice memo, or type a quick text description. Llama 3.2 Vision analyzes the input and estimates macronutrients automatically, turning a 2-minute logging chore into a 5-second interaction.
+The technical ambition behind RecompAI is running a sophisticated multi-agent AI system entirely on Cloudflare's edge infrastructure. No GPU servers, no traditional cloud backend. Every AI inference call, every database query, every image analysis runs on Workers, D1, R2, Vectorize, and Workers AI. The project has become a deep exploration of what's possible — and what breaks — when you build production AI features on constrained edge compute.
 
-The AI coaching layer ties everything together. Because the platform has full context on your meals, supplements, and progress trends, coaching conversations are specific and actionable -- not the generic advice you get from ChatGPT prompts. Weekly automated email summaries surface trends and insights that would be invisible in day-to-day tracking.
+The codebase is ~275K lines of TypeScript across 323+ files, shipped over 9 major milestones since January 2026.
 
-## Tech Stack Breakdown
+## Architecture
 
-### Infrastructure
+### Multi-Agent Routing
 
-- **Cloudflare Workers** -- Handles all API routes, AI inference orchestration, and server-side rendering. The stateless edge model keeps response times fast regardless of user location.
-- **D1 (SQLite at Edge)** -- Stores user profiles, meal logs, supplement protocols, coaching conversation history, and weekly summary data. Schema designed for efficient time-series queries on meal and supplement data.
-- **R2 (Object Storage)** -- Stores meal photos uploaded by users. Images are processed by Workers AI for macro estimation before the thumbnail is stored for the meal history UI.
+The core of the system is a multi-agent dispatch architecture that replaced an earlier monolithic AI layer. Every incoming message flows through a lightweight LLM router (Llama 3.1 8B) that classifies intent into one of four domains: meal, protocol, body-metrics+workout, or general. High-confidence single-domain messages route directly to a specialist agent with scoped tools and a domain-specific system prompt. Multi-domain or ambiguous messages route to a general coordinator that fans out to specialists in parallel and synthesizes their responses.
 
-### Frontend
+This decomposition was driven by a practical problem: a single model with access to all 20+ tools made unreliable tool selections. Scoping each specialist to only its domain's tools (meal specialist sees only meal tools, protocol specialist sees only protocol tools) dramatically improved tool-calling accuracy and reduced token usage per request.
 
-- **React 19** -- Client-side UI with server components for initial page loads. The meal logging interface needs to be responsive and fast -- React's concurrent features handle photo uploads and AI processing feedback without blocking the UI.
-- **Capacitor** -- Wraps the web application in a native iOS shell. Provides access to the device camera for meal photos, microphone for voice input, and push notifications for supplement reminders. One codebase serves both web and native.
+The coordinator itself calls no domain tools — it delegates to specialist runner functions and synthesizes results into one natural coaching response. This separation prevents the coordinator from accidentally logging data or modifying protocols when it should only be aggregating information.
 
-### AI & Search
+### Five Models, Five Jobs
 
-- **Workers AI (Llama 3.2 Vision)** -- The multi-modal model powers meal analysis from photos. Given an image of a plate of food, it identifies individual items, estimates portion sizes, and calculates approximate macronutrient values. Also handles text-based meal descriptions and voice transcription analysis.
-- **Vectorize** -- Cloudflare's vector database stores embeddings of meals, coaching conversations, and supplement protocols. Enables semantic search over meal history ("when did I last eat salmon?") and gives the coaching AI access to relevant historical context during conversations.
+Not every task needs the same model. RecompAI uses five different models, each selected for a specific capability:
 
-### Communication
+- **Llama 3.1 8B** — Intent classification router. Fast, cheap, and accurate enough for a 4-class classification task. Also handles onboarding Q&A where no tool calling is needed.
+- **Llama 3.2 11B Vision** — Food photo analysis. The only multi-modal model in the stack. Identifies food items from photos, estimates portions, and returns structured macro data.
+- **Llama 4 Scout 17B** — Primary tool-calling model for specialist agents. Promoted over the 70B model after testing revealed that the larger model had nondeterministic tool sequencing and weak hypothetical rejection. Scout is faster and more reliable at following tool-calling instructions.
+- **GLM 4.7 Flash** — Fallback model when the primary fails or is unavailable.
+- **BGE Base (bge-base-en-v1.5)** — Embedding model for semantic food search via Vectorize.
 
-- **Email Summaries** -- Automated weekly digests compile meal trends, supplement adherence rates, macro averages, and coaching insights. Generated by Workers AI from structured data and delivered via scheduled Workers.
+Model selection is configurable per-task through environment variables, so swapping models requires a config change rather than a code deploy.
 
-## Key Features
+### Context Assembly
 
-- **Multi-Modal Meal Tracking** -- Log meals via photo (AI vision analysis), voice memo (transcription + parsing), or text description. AI estimates macros automatically, eliminating manual food database searches.
-- **Supplement Protocol Management** -- Define supplement stacks with dose escalation schedules, track daily adherence, and receive reminders. The system understands cycling protocols and loading phases.
-- **AI Coaching Conversations** -- Context-aware coaching that references your actual meal history, supplement protocols, and progress trends. Not generic advice -- specific recommendations based on your data.
-- **Semantic Meal History Search** -- Find past meals by description, not just date. "Show me high-protein dinners from last week" works because meals are indexed by vector embeddings.
-- **Weekly Automated Summaries** -- Email digests with macro trends, adherence rates, notable patterns, and AI-generated insights about your progress.
-- **Native iOS App** -- Full native experience via Capacitor with camera integration, push notifications, and offline meal draft support.
+Every chat request assembles a rich context payload before calling the AI model. The system loads the user's profile, today's meals with running macro totals, the last 20 chat messages, active protocols with dose schedules, recent workouts, and optionally relevant past context from Vectorize semantic search.
 
-## Challenges & Solutions
+Context loading is configurable to avoid waste. A meal logging request loads meal-scoped context (no workout history, no chat archive), reducing memory usage by 60-80% compared to loading everything. An analytics query loads date-ranged data. A quick profile check loads almost nothing. This matters on Workers, where execution time and memory are constrained.
 
-### Vision Model Accuracy for Food Recognition
+## The Tool-Calling Problem
 
-**Problem:** Food recognition from photos is inherently ambiguous. Portion sizes are hard to estimate from a single image, and visually similar foods can have very different macro profiles (cauliflower rice vs. white rice, for example).
+The most technically interesting part of RecompAI is the set of guardrails engineered around LLM tool calling. This is where the real lessons live.
 
-**Approach:** Rather than treating the AI estimate as ground truth, the system presents its analysis as an editable suggestion. Users see "Looks like grilled chicken breast (~6oz), brown rice (~1 cup), steamed broccoli (~1 cup)" and can adjust quantities or swap items. Over time, the model's accuracy for a specific user improves because correction patterns are stored and referenced.
+### Why Cloudflare's `runWithTools` Doesn't Work
 
-**Solution:** The correction-loop approach means the AI gets more accurate for each user's typical meals. A user who eats the same breakfast regularly will see near-perfect estimates after a few corrections. The UX communicates uncertainty honestly -- confidence scores are shown, and the edit interface is frictionless.
+Cloudflare provides a `runWithTools` utility for tool-calling loops. It has a critical flaw: when the model returns a text response after processing tool results, `runWithTools` discards that response and makes another `ai.run` call for a "final response." This second call often produces worse or wrong output because it lacks the context of the tool results the model just processed.
 
-### Conversation Context Management at Scale
+RecompAI replaces `runWithTools` with a custom tool loop that returns the model's response as soon as it stops calling tools, without making redundant extra calls. The custom loop also passes `max_tokens` properly (Workers AI defaults to ~256 tokens when unset, causing truncation) and sets `temperature: 0` with `top_k: 1` for deterministic tool calling — the default `temperature: 0.6` causes the model to randomly choose between calling tools and narrating what it would do.
 
-**Problem:** AI coaching conversations need access to weeks or months of meal and supplement history to give specific advice. But sending an entire user history with every chat message would blow past context windows and add unacceptable latency.
+### Nudge-Retry Logic
 
-**Approach:** Used Vectorize to create a retrieval-augmented generation (RAG) pipeline. When a user sends a coaching message, the system embeds the query, retrieves the most relevant meal logs, supplement records, and previous coaching exchanges, then constructs a focused context window for the AI.
+Even with low temperature, Llama 4 Scout sometimes narrates tool actions as text instead of actually calling the tools. "I'll log that meal for you" — but no `log_meal` tool call appears. The custom tool loop detects this on round 0: if the model returns text without tool calls on an action-phrased message, it appends a nudge message ("Please use the available tools to complete this action. Do not describe what you would do — call the tools directly.") and retries once. This single retry fixes the majority of narration failures.
 
-**Solution:** Coaching responses reference specific meals and patterns from the user's history without requiring the full history in context. A user asking "Why am I so tired in the afternoons?" gets an answer that considers their recent lunch patterns, caffeine timing, and sleep-related supplement protocols -- not a generic "try sleeping more" response.
+### Duplicate Call Detection
 
-### Native App Bridge with Web-First Architecture
+Models can get stuck in loops, calling the same tool with the same arguments repeatedly. The tool loop tracks call signatures (tool name + serialized arguments) across rounds and breaks the loop when it detects a duplicate, falling back to a final response generation without tools.
 
-**Problem:** The platform is web-first, but meal photo logging is dramatically better as a native experience. Camera access, photo library integration, and push notifications for supplement reminders all need native capabilities.
+### USDA-First Guardrail
 
-**Approach:** Chose Capacitor over React Native to maintain a single web codebase. Native plugins handle camera, filesystem, and push notification access. The web app detects its runtime environment and adapts the UI accordingly -- native users see a camera button in the meal logger, web users see a file upload.
+A code-level guardrail blocks `log_meal` from executing unless `search_usda` has been called first in the same request. This prevents the model from logging meals with hallucinated macro values. The guardrail returns a synthetic error to the model explaining what it needs to do: "You must call search_usda for each food item BEFORE calling log_meal." The model then self-corrects on the next round.
 
-**Solution:** One codebase deploys to both web and iOS with platform-appropriate UX. Camera-to-AI analysis takes under 3 seconds on device. Push notifications drive supplement adherence rates significantly higher than web-only reminders.
+This guardrail exists because prompt instructions alone are insufficient — models will occasionally skip the search step and estimate macros from training data, especially under token pressure or when the food item is common enough that the model "knows" the answer.
+
+### Hypothetical Intent Filtering
+
+Users ask questions like "What would happen if I ate 200g of protein?" or "How much protein is in a chicken breast?" These are questions, not logging requests. But models with available write tools will eagerly log data on hypothetical messages.
+
+The solution is surgical: a regex-based detector identifies hypothetical/question intent, and when triggered, the system strips write tools from the tool schema before the AI call. The model literally cannot call `log_meal` or `log_weight` because those tools don't exist in its schema for that request. This is more reliable than prompt instructions because it removes the possibility rather than asking the model to exercise restraint.
+
+### Destructive Operation Gate
+
+Archive and delete operations (like removing a protocol or deleting a dose record) are blocked on round 0 of the tool loop. The guardrail forces the model to describe what the operation will do and ask for user confirmation before it can execute. On subsequent rounds (after the user has confirmed), the operations are allowed through.
+
+## Food Search System
+
+Meal logging depends on accurate food identification. RecompAI runs a dual-search system combining FTS5 full-text search against a downloaded USDA food database in D1 with Vectorize semantic search, both executing in parallel.
+
+FTS5 handles exact and prefix matches — "chicken breast" finds chicken breast entries directly. Vectorize handles semantic queries — "something to keep my food safe from bears" would find bear canisters if this were a product catalog. For food, semantic search catches natural language descriptions that keyword matching misses.
+
+Results are merged, deduplicated by FDC ID, and scored. Foods found in both searches get a boosted score. Brand detection adds another layer: queries like "Kraft mac and cheese" trigger brand-boosted BM25 weighting that heavily favors brand_name and brand_owner column matches, with a 100ms timeout that falls back gracefully to standard search if the brand path is slow.
+
+## Compound Knowledge Base
+
+The protocol domain is backed by a 37-compound knowledge base covering TRT, GLP-1 agonists, peptides, and ancillaries. Each compound has structured data (clinical dose ranges, canonical units, half-life, common protocols, FDA ranges) stored in KV, plus deep-research narrative content stored as markdown files in R2 and auto-indexed via Cloudflare AutoRAG for semantic retrieval.
+
+When a user asks about a compound, a pre-flight search scores the message against the knowledge base. High relevance scores inject the compound knowledge into the specialist's context with explicit instructions to use only the provided knowledge and not training data (which may be outdated for rapidly evolving compounds). Low scores trigger fuzzy matching to suggest similar compound names.
+
+Smart dose validation catches input errors before they corrupt protocol history: range checks against the knowledge base, 5x deviation detection from the user's recent doses, and unit consistency checks (mg vs mcg vs IU).
+
+## Security
+
+Input sanitization strips prompt injection patterns (instruction manipulation, role-playing attempts, template injection, code blocks, dangerous Unicode) before any message reaches the AI. A scoring system classifies injection risk as low, medium, or high — high-risk messages are blocked entirely and return a safe fallback response. Rate limiting is applied per-endpoint with configurable thresholds. JWT authentication uses Web Crypto API with token rotation.
+
+Custom ESLint rules enforce SQL injection prevention and domain boundary integrity at lint time, catching violations before they reach production.
+
+## Eval Framework
+
+A Claude-as-judge evaluation framework validates AI behavior across test cases covering all four domains. Each test case specifies expected routing, required and forbidden tool calls, and a rubric with weighted criteria. The eval runner executes the full dispatch pipeline against each case, and a Claude judge scores the response on a multi-dimensional rubric.
+
+This catches regressions that unit tests miss — like a model upgrade that routes correctly but produces worse coaching responses, or a prompt change that improves one domain while degrading another.
+
+## Tech Stack
+
+- **Cloudflare Workers** — All API routes, AI inference orchestration, marketing site SSR, and frontend serving from a single Worker entry point.
+- **D1** — User data, meals, protocols, chat history, body metrics, workouts, USDA food database with FTS5 indexing. Optimized indexes support context loading patterns.
+- **R2** — Food photos, progress photos, compound knowledge base documents, marketing assets.
+- **KV** — Pre-computed weekly summaries, recent conversation snapshots, protocol status cache, structured compound data (37 compounds with Zod-validated schemas).
+- **Vectorize** — Two shared indexes: `recomp-food-names` for semantic food search and `recomp-chat-summaries` for coaching context retrieval. Per-user metadata filtering.
+- **Workers AI** — Five models for five jobs (see architecture section). All inference at the edge.
+- **React 19** — Frontend PWA with Vite and Tailwind CSS.
+- **Capacitor 8** — Native iOS wrapper with camera integration for meal photos, push notifications for supplement reminders, and offline meal draft support.
+- **Resend + React Email** — Transactional emails (verification, password reset) and automated weekly coaching digests triggered by Worker cron.
 
 ## Outcomes
 
-- **Multi-modal meal logging** reducing tracking time from minutes to seconds via photo, voice, and text input
-- **Context-aware AI coaching** that references actual user data instead of generic advice
-- **Semantic search** over meal history and coaching conversations via Vectorize embeddings
-- **Native iOS experience** from a single web codebase using Capacitor
-- **Automated weekly insights** surfacing trends that would be invisible in daily tracking
-- **Edge-native architecture** keeping all data processing on Cloudflare's network for consistent performance
+- **Multi-agent architecture** decomposing a monolithic AI layer into 6 bounded domain modules with specialist agents and a coordinator
+- **Custom tool-calling loop** replacing Cloudflare's `runWithTools` with nudge-retry, duplicate detection, and code-level guardrails
+- **Five-model orchestration** matching model capabilities to task requirements for optimal cost, speed, and reliability
+- **Dual-search food system** combining FTS5 and Vectorize with brand detection for accurate meal logging against a full USDA database
+- **37-compound knowledge base** with AutoRAG semantic search, KV-backed structured data, and smart dose validation
+- **Claude-as-judge eval framework** catching behavioral regressions across routing, tool usage, and response quality
+- **275K+ lines of TypeScript** shipped across 9 milestones in under 3 months, running entirely on Cloudflare's edge infrastructure
