@@ -33,7 +33,7 @@ const yearCounts = new Map<number, number>();
 const processedMilestones = milestones.map((m) => {
   const count = yearCounts.get(m.yearNum) ?? 0;
   yearCounts.set(m.yearNum, count + 1);
-  return { ...m };
+  return { ...m, pct: ((m.yearNum - startYear) / span) * 100 };
 });
 
 const yearIndices = new Map<number, number>();
@@ -45,9 +45,25 @@ for (const m of processedMilestones) {
     yearIndices.set(m.yearNum, idx + 1);
   }
 }
+
+// Collision detection: nudge overlapping milestones apart horizontally
+const MIN_GAP = 5; // minimum % distance between dots
+processedMilestones.sort((a, b) => a.pct - b.pct);
+for (let i = 1; i < processedMilestones.length; i++) {
+  const prev = processedMilestones[i - 1];
+  const curr = processedMilestones[i];
+  const gap = curr.pct - prev.pct;
+  if (gap < MIN_GAP) {
+    const shift = (MIN_GAP - gap) / 2;
+    prev.pct = Math.max(0, prev.pct - shift);
+    curr.pct = Math.min(100, curr.pct + shift);
+    // Cascade: re-check previous pair if we pushed prev back
+    if (i > 1) i -= 2;
+  }
+}
 ---
 
-<div class="relative h-32">
+<div class="relative h-40">
   <!-- Horizontal line -->
   <div class="absolute left-0 right-0 top-1/2 h-0.5 bg-white/15"></div>
 
@@ -68,22 +84,19 @@ for (const m of processedMilestones) {
 
   <!-- Milestone nodes -->
   {
-    processedMilestones.map((m) => {
-      const pct = ((m.yearNum - startYear) / span) * 100;
-      return (
-        <div
-          class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-          style={`left: ${pct}%`}
-        >
-          <MilestoneNode
-            year={m.year}
-            label={m.label}
-            detail={m.detail}
-            position={m.position}
-          />
-        </div>
-      );
-    })
+    processedMilestones.map((m) => (
+      <div
+        class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={`left: ${m.pct}%`}
+      >
+        <MilestoneNode
+          year={m.year}
+          label={m.label}
+          detail={m.detail}
+          position={m.position}
+        />
+      </div>
+    ))
   }
 </div>
 

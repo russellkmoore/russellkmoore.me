@@ -9,11 +9,15 @@ interface Props {
 const { year, label, detail, position = "above" } = Astro.props;
 
 const isAbove = position === "above";
-const labelClasses = isAbove ? "bottom-full mb-3" : "top-full mt-3";
+const labelClasses = isAbove ? "bottom-full mb-4" : "top-full mt-4";
+const staggerClasses = isAbove ? "-translate-y-1" : "translate-y-1";
 ---
 
 <div
-  class="milestone-node relative flex flex-col items-center cursor-pointer"
+  class:list={[
+    "milestone-node relative flex flex-col items-center cursor-pointer p-3",
+    staggerClasses,
+  ]}
   tabindex="0"
   data-tooltip-year={String(year)}
   data-tooltip-label={label}
