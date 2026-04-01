@@ -106,7 +106,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+- Fix fox timeline spacing (ui) — `2026-04-01-fix-fox-timeline-spacing.md`
 
 ### Roadmap Evolution
 
