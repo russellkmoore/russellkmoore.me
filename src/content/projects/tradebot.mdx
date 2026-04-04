@@ -1,0 +1,83 @@
+---
+title: "Tradebot"
+description: "Automated paper trading bot running entirely on Cloudflare's edge — trades 4 assets across crypto and equities using a 6-source signal pipeline, ATR-based risk sizing, and a nightly self-tuning optimizer, with every decision logged to D1 as ML training data."
+stack: ["TypeScript", "Cloudflare Workers", "Durable Objects", "D1", "Hono", "Alpaca API", "Zod", "trading-signals"]
+status: "In Development"
+featured: true
+order: 8
+---
+
+## Overview
+
+Tradebot is an automated paper trading system built entirely on Cloudflare's edge infrastructure — no origin servers, no managed databases, no external queues. It wakes every 15 minutes, evaluates market conditions across 4 assets using signals from 6 data sources, computes a per-asset confidence score, and executes paper trades via Alpaca's API. Overnight, a nightly optimizer analyzes win rates and adjusts decision thresholds within human-configured bounds.
+
+The project started as a question: can a real trading system — with multi-asset support, live market data, proper risk management, and an admin dashboard — run entirely on Workers' edge compute? The answer is yes. The full platform runs on Cloudflare's $5/month paid plan: Workers for compute and cron, D1 for persistent storage, KV for signal caching, and Durable Objects for serialized per-asset state.
+
+Every trade decision logs a full snapshot of all 15 signals at entry time. Over time this becomes a labeled ML training dataset — each row contains the conditions that led to a trade and whether it succeeded. The architecture is designed so paper trading and data collection are the same operation.
+
+## Signal Architecture
+
+The most interesting design challenge was collecting signals at the right frequency without burning free-tier API quotas. Signals change at different timescales — VIX and Fear & Greed move hourly, treasury spreads and news sentiment move daily, price action moves every minute. Hitting every API on every 15-minute trading loop would exhaust rate limits immediately.
+
+The solution is a three-tier collection architecture that writes to KV, which the trading loop reads cheaply on every cycle.
+
+### Hourly Signals
+
+A `0 * * * *` cron collects the technical indicators that need to stay reasonably fresh: RSI(2), RSI(14), ATR(14), volume ratio, and price vs. 200-day moving average — computed per asset from Alpaca bar data. VIX level comes from FRED. CNN's Fear & Greed Index (0–100) rounds out the hourly bucket.
+
+All results land in KV with an `hourly` timestamp. The trading loop reads these values from cache rather than making live API calls, keeping the hot path fast and quota-safe.
+
+### Daily Macro Signals
+
+A `0 14 * * *` cron (7am PT, before market open) collects the slower-moving macro picture: 10Y-2Y yield curve spread, high-yield credit spread, Finnhub news sentiment aggregated over 1hr and 24hr windows, days-to-next-CPI, and days-to-next-FOMC. A macro regime classifier reads these values and writes a single label (`risk_on`, `risk_off`, `neutral`) that the trading loop uses as a context overlay.
+
+### The 15-Minute Trading Loop
+
+The core `*/15 * * * *` cron reads all cached signals from KV, assembles a typed `SignalSnapshot`, computes a weighted confidence score for each asset, and decides whether to enter, hold, or exit. If a trade fires, the decision and full signal snapshot are written atomically to D1 — the confidence score, the regime label, every RSI value, every macro input. Nothing is discarded.
+
+This separation is what makes the architecture work. Signal collection is cheap because it happens once per frequency tier. Trade decisions are fast because they only read from KV. D1 gets a durable, queryable record of every decision with full context.
+
+## Multi-Asset Execution
+
+### Independent State per Asset
+
+The four assets — BTC, ETH, NVDA, and SPY — each run in their own Durable Object instance. Each DO holds SQLite-backed state: current position, working capital, unrealized P&L, entry price, ATR at entry, and circuit breaker status. No shared state means no race conditions when two assets happen to trigger a trade in the same cron cycle.
+
+Crypto assets trade 24/7 using Alpaca's crypto endpoint with `GTC` (good-till-canceled) orders. Equity assets only trade during market hours — every cycle for NVDA and SPY checks Alpaca's Market Clock API first and skips execution if the market is closed. Notional sizing applies to crypto (buy $X worth), quantity sizing applies to equities (buy N shares). Same confidence logic, different order construction.
+
+### ATR-Based Risk Sizing
+
+Stop-loss and take-profit brackets are set relative to each asset's ATR at entry, not fixed dollar amounts. BTC's ATR runs around $1,500, ETH's around $100, NVDA's around $8, SPY's around $5. A flat $50 bracket would be too tight for BTC and wildly loose for SPY. Using 1× ATR as the stop and 1.5× ATR as the target gives each asset a bracket proportional to its actual volatility — consistent risk/reward geometry across very different instruments.
+
+## Nightly Optimizer
+
+After midnight, an optimizer reviews the trade log for each asset, computes win rates by signal condition, and evaluates whether the current confidence thresholds are generating good decisions. If win rate on high-confidence signals is low, thresholds tighten. If the bot is sitting out too many potential trades, they loosen.
+
+Adjustments are bounded by admin-configurable guardrails: a maximum change percentage per cycle and absolute floor/ceiling values for each threshold. The optimizer can tune within its allowed range, but it cannot move goalposts beyond what the operator permits. No self-modification of risk limits — those stay human-controlled. A threshold history table in D1 records every adjustment with timestamp and magnitude, so the optimization path is fully auditable.
+
+## Admin Dashboard
+
+The admin interface is built with Hono JSX (server-side rendering, no client build step) and Pico CSS, protected by Cloudflare Access with one-time PIN or identity provider login. It polls the API every 30 seconds to stay live without a websocket.
+
+Six pages cover the full picture: a summary dashboard with P&L cards, regime label, and per-asset status; a trade history view with signal snapshot expansion per trade; a signals page showing current values for all 15 inputs; a threshold editor for tuning confidence parameters; a controls page with the global stop flag and circuit breaker override; and an operations page showing optimizer status and last adjustment run.
+
+The stop flag is a single KV write that all trading loops check on every cycle. Flipping it from the dashboard halts all new positions within 15 minutes without touching any running infrastructure.
+
+## Tech Stack
+
+- **Cloudflare Workers** — edge compute, cron triggers (15-min, hourly, daily), zero cold starts on Workers Paid
+- **Durable Objects** — SQLite-backed per-asset state, serialized writes prevent concurrent mutations
+- **D1** — trade log, signal snapshots, threshold history, daily summaries, optimizer state
+- **KV** — signal cache, config, regime label, stop flag
+- **Hono v4** — HTTP routing and JSX SSR for the admin dashboard
+- **Alpaca API v2** — paper trading execution, market clock, bar data (direct REST, no SDK — Workers-incompatible)
+- **FRED, Finnhub, CNN** — macro and sentiment signal sources (all free-tier)
+- **trading-signals** — pure TypeScript RSI, EMA, ATR, Bollinger — no native dependencies, runs in Workers
+- **Zod** — runtime schema validation on all external API responses
+- **Vitest + @cloudflare/vitest-pool-workers** — tests run in actual workerd runtime with real D1/KV/DO bindings
+
+## Outcomes
+
+Tradebot v1.0 shipped March 31, 2026 with BTC paper trading and full infrastructure validation. v1.1 (April 3, 2026) extended to 4-asset multi-asset trading with market-hours gating. The next milestone introduces LLM-assisted decision making — using a lightweight model to synthesize the signal snapshot and overlay qualitative reasoning on top of the quantitative confidence score.
+
+The paper trading phase is doing two things simultaneously: validating the trading logic and accumulating training data. Every trade builds the labeled dataset that will eventually let the system evaluate whether its own signals are actually predictive.
