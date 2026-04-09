@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A personal portfolio site for Russell Moore — engineering leader, builder, and AI product creator. The site showcases projects, career highlights, and writing to hiring managers, consulting clients, and technical peers. Dark, modern aesthetic inspired by linear.app and vercel.com.
+A personal portfolio site for Russell Moore — engineering leader, builder, and AI product creator. Full-featured Astro 5 static site with dark theme, MDX-powered blog and project case studies, career timelines, and a 6-component MDX library. Deployed to Cloudflare Workers.
 
 ## Core Value
 
@@ -12,52 +12,48 @@ Visitors immediately understand Russell's expertise and can see tangible proof o
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Hero section with name, tagline, animated mesh gradient, and two anchor CTAs — v1.0
+- ✓ About section with narrative + 4 stats cards (20+ Years, $2B+, $13M ARR, 200+ Global Team) — v1.0
+- ✓ Projects section as card grid from content collection with tech stack tags and status badges — v1.0
+- ✓ Career section with 4 company cards (AT&T, Spark::red, Pivotree, Black Magic Consulting) and horizontal accomplishment timelines — v1.0
+- ✓ Writing section with blog index, individual post pages, and homepage latest posts — v1.0
+- ✓ Contact section with email + LinkedIn and "what I'm open to" copy — v1.0
+- ✓ Sticky nav with mobile hamburger menu, footer with social icons — v1.0
+- ✓ Reusable components: Card, Badge, SectionHeader, TimelineBar, MilestoneNode — v1.0
+- ✓ Layout.astro wrapping all pages with SEO meta tags and OG previews — v1.0
+- ✓ Content collections for projects/ and writing/ with Zod schemas — v1.0
+- ✓ MDX support with Shiki syntax highlighting and prose typography — v1.0
+- ✓ Project detail pages at /projects/[slug] with case study content — v1.0
+- ✓ 6-component MDX library (Callout, Figure, CodeComparison, ScreenshotCarousel, InteractiveScreenshot, LinkCard) — v1.0
+- ✓ Dark theme (#0a0a0f bg, #7c3aed violet accent), Geist Sans font, responsive layout — v1.0
+- ✓ Cloudflare Workers deployment via wrangler (static output) — v1.0
+- ✓ Accessibility: skip-to-content, focus-visible, keyboard nav, ARIA labels — v1.0
 
 ### Active
 
-- [ ] Hero section with name, tagline (tech leadership angle, TBD copy), and two anchor CTAs ("See My Work" → Projects, "Let's Talk" → Contact)
-- [ ] Subtle animated gradient in hero background (tasteful, not flashy)
-- [ ] About section with short narrative + 4 stats cards (20+ Years, $2B+ Platform Scale, $13M ARR Built & Acquired, 200+ Global Team)
-- [ ] Projects section as card grid from Astro content collection, with tech stack tags and status badges (Live / In Development)
-- [ ] Career section with 3 highlight cards: AT&T, Spark::red, Pivotree — key metrics, not a resume
-- [ ] Writing section as card grid from Astro content collection, with graceful "coming soon" state when no published posts
-- [ ] Contact section with email + LinkedIn, brief "what I'm open to" copy (full-time roles, consulting, advising, interesting conversations)
-- [ ] Sticky nav with name/logo left, section links right, hamburger menu on mobile
-- [ ] Minimal footer with copyright + LinkedIn + GitHub icons
-- [ ] Reusable components: Card.astro, Badge.astro, SectionHeader.astro
-- [ ] Layout.astro wrapping all pages
-- [ ] Astro content collections for projects/ and writing/ with defined frontmatter schemas
-- [ ] Seed project entries: Mercora and RecompAI
-- [ ] Seed writing entries (all draft:true, never rendered): 3 articles
-- [ ] Draft filtering — writing with draft:true never renders on the site
-- [ ] Dark design: ~#0a0a0f background, violet/purple accent (#7c3aed), off-white text, muted gray secondary
-- [ ] Geist Sans font via @fontsource with Inter fallback
-- [ ] Card-based layout with grid feel, generous whitespace
-- [ ] Fully responsive (mobile-first)
-- [ ] Cloudflare Workers deployment via wrangler with @astrojs/cloudflare adapter (output: static)
-- [ ] npm scripts: dev, build, deploy
-- [ ] README with local dev + deploy instructions
+- [ ] RSS feed for writing posts
+- [ ] Reading time estimate on writing entries
+- [ ] OG image (deferred from v1.0 — approved without screenshot)
 
 ### Out of Scope
 
-- Contact form — unnecessary complexity for v1, email link is sufficient
-- CMS integration — content collections with markdown files are enough
-- Authentication — no gated content
-- RSS feed — v2 idea
-- Reading time on articles — v2 idea
-- Project demo embeds — v2 idea
+- Contact form — email link is sufficient, avoids spam/backend complexity
+- CMS integration — content collections with markdown files are enough for <20 items
+- Authentication — no gated content needed
 - OAuth / social login — no user accounts
 - Mobile app — web only
+- Dark/light mode toggle — dark theme IS the brand
+- Blog comments — link to LinkedIn discussions instead
+- Heavy animations (GSAP, parallax) — subtle CSS transitions only
 
 ## Context
 
-- Domain: russellkmoore.me (already owned, Cloudflare DNS)
-- Audience: hiring managers evaluating leadership fit, consulting clients assessing expertise, technical peers checking credibility
+- Domain: russellkmoore.me (Cloudflare DNS)
+- Audience: hiring managers, consulting clients, technical peers
 - Russell's background: 20+ years engineering leadership, AT&T ($2B platform), Spark::red (VP Engineering), Pivotree ($13M ARR)
-- Current focus: building AI-powered products (Mercora, RecompAI) using Anthropic's ecosystem (Claude API, MCP)
-- Hero tagline: tech leadership angle, exact copy TBD — placeholder until Russell finalizes
-- All seed writing is draft-only; the Writing section should gracefully show "coming soon"
+- Current focus: AI-powered products (Mercora, RecompAI) using Anthropic's ecosystem
+- Shipped v1.0: 3,688 LOC across Astro/TS/CSS/MDX, 7 project pages, blog system, 6 MDX components
+- Tech stack: Astro 5.18, Tailwind CSS v4, TypeScript, @astrojs/mdx, Cloudflare Workers
 
 ## Constraints
 
@@ -71,29 +67,18 @@ Visitors immediately understand Russell's expertise and can see tangible proof o
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Astro with static output | Fast, simple, perfect for content site | — Pending |
-| Content collections over CMS | No runtime dependency, version-controlled content | — Pending |
-| Cloudflare Workers deployment | Already on Cloudflare, fast global CDN | — Pending |
-| Card-based layout | Modern feel, scannable by busy hiring managers | — Pending |
-| No contact form | Email link is simpler and equally effective | — Pending |
-| Draft filtering for writing | Ship the section structure now, publish content later | — Pending |
-
-## Evolution
-
-This document evolves at phase transitions and milestone boundaries.
-
-**After each phase transition** (via `/gsd:transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
-
-**After each milestone** (via `/gsd:complete-milestone`):
-1. Full review of all sections
-2. Core Value check — still the right priority?
-3. Audit Out of Scope — reasons still valid?
-4. Update Context with current state
+| Astro with static output | Fast, simple, perfect for content site | ✓ Good — fast builds, zero JS by default |
+| Content collections over CMS | No runtime dependency, version-controlled content | ✓ Good — Zod schemas catch errors at build |
+| Cloudflare Workers deployment | Already on Cloudflare, fast global CDN | ✓ Good — seamless deploy via wrangler |
+| Card-based layout | Modern feel, scannable by busy hiring managers | ✓ Good — clean grid layout |
+| No contact form | Email link is simpler and equally effective | ✓ Good — no spam concerns |
+| Draft filtering for writing | Ship the section structure now, publish content later | ✓ Good — graceful "coming soon" state |
+| No @astrojs/cloudflare for static | SSR-only adapter, not needed for static output | ✓ Good — simpler config |
+| Tailwind v4 CSS-based config | @theme tokens in CSS instead of JS config file | ✓ Good — faster builds, cleaner setup |
+| JS tooltips for timelines | CSS approach had overflow clipping issues | ✓ Good — fixed-position tooltips work reliably |
+| MDX auto-registration via barrel | Components prop on Content render, barrel import | ✓ Good — DRY, no per-page imports needed |
+| Career data hardcoded | Only 4 static entries, not worth a content collection | ✓ Good — simple and fast |
+| Singleton dialog per carousel | One dialog instance per ScreenshotCarousel | ✓ Good — avoids DOM bloat |
 
 ---
-*Last updated: 2026-03-26 after initialization*
+*Last updated: 2026-04-09 after v1.0 milestone*
