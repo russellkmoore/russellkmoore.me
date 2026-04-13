@@ -1,0 +1,74 @@
+---
+title: "CF Code Assistant"
+description: "A Cloudflare Workers MCP server that slashes Claude token costs by routing mechanical code generation tasks to Cloudflare Workers AI — 12 tools, two-tier model routing, OAuth 2.1 auth, and 95.5% test coverage."
+stack: ["Cloudflare Workers", "Workers AI", "KV", "TypeScript", "MCP SDK", "OAuth 2.1", "Vitest"]
+status: "Live"
+github: "https://github.com/russellkmoore/cf-code-assistant"
+featured: true
+order: 9
+---
+
+## Overview
+
+CF Code Assistant is a production MCP server that addresses a capacity issue with my Claude Pro plan: why pay Claude Opus rates for boilerplate gode generation? Every AI-assisted coding session involves a mix of high-reasoning work (architecture decisions, debugging complex logic, code review with context) and mechanical work (scaffolding tests, generating docs, reformatting code, writing commit messages). Claude is exceptional at the first category and wildly overqualified for the second.
+
+I built this while using [GSD](https://github.com/gsd-build/get-shit-done) for spec-driven design — the disciplined plan/execute/verify loop produces excellent results, but it burns through tokens fast. That cost pressure is exactly what pushed me to offload the mechanical work to a cheaper model in the first place.
+
+This server sits between Claude Code and Cloudflare Workers AI, exposing 12 MCP tools that handle the mechanical side. When Claude encounters a task that doesn't require its reasoning capabilities — generating TypeScript types from untyped code, writing JSDoc comments, scaffolding a test file, producing a commit message from a diff — it delegates to CF Code Assistant instead of doing the work itself. The inference runs on `@cf/qwen/qwen3-30b-a3b-fp8` at a fraction of the cost. Claude stays in the loop for orchestration, context gathering, and quality judgment. The cheaper model handles the typing.
+
+## Two-Tier Model Routing
+
+Not all mechanical tasks are equal. Writing a commit message from a diff is simpler than generating a full test suite. CF Code Assistant uses a two-tier model system to match task complexity to model capability:
+
+**Fast tier** handles lightweight tasks — `quickTask` for simple snippets, `generateCommitMessage` for diffs, and `explainCode` at brief or ELI5 depth. These are tasks where a smaller, faster model produces equivalent output.
+
+**Standard tier** handles generation-heavy work — `generateCode` from a spec, `reviewCode` for multi-dimensional analysis, `transformCode` for mechanical refactors, `scaffoldTests` for test file generation, `generateDocs`, `generateTypes`, and `fixBug` for targeted repairs.
+
+Both tiers are configurable at runtime via KV keys (`config:model:fast`, `config:model:standard`). When Cloudflare releases a better model, I swap it in with a KV write — no redeploy, no downtime. Invalid KV entries self-heal back to hardcoded defaults.
+
+## The 12 Tools
+
+| Tool | Tier | What It Does |
+|------|------|--------------|
+| `generateCode` | standard | Produces code from a spec + context window (up to 20K prompt + 50K context) |
+| `reviewCode` | standard | Static analysis across bugs, style, performance, and security dimensions |
+| `transformCode` | standard | Mechanical transforms — rename, reformat, convert patterns |
+| `scaffoldTests` | standard | Generates test scaffolding for existing code |
+| `generateDocs` | standard | Writes JSDoc/TSDoc/inline documentation |
+| `generateTypes` | standard | Infers TypeScript types from untyped code |
+| `fixBug` | standard | Targeted bug fixes given code + error message |
+| `quickTask` | fast | Simple self-contained tasks — regex, snippets, conversions |
+| `explainCode` | fast/standard | Code explanations at brief, detailed, or ELI5 depth |
+| `generateCommitMessage` | fast | Conventional commit messages from diffs |
+| `generateWorkerBoilerplate` | standard | Scaffolds a Cloudflare Worker + wrangler.toml |
+| `routingInfo` | — | Returns the routing guide (zero-cost, no AI call) |
+
+Every tool validates input size before calling the model. Code inputs cap at 100K characters, context at 50K, quick tasks at 10K. Oversized inputs get a clear error rather than a truncated result.
+
+## Security & Auth
+
+The server uses OAuth 2.1 with a PIN-based authorization flow via `@cloudflare/workers-oauth-provider`. First connection triggers a browser-based auth flow; subsequent connections use a cached token with a one-year TTL. CSRF tokens are stored in KV with a 5-minute TTL, and auth attempts are rate-limited to 5 per minute per IP with timing-safe PIN comparison.
+
+Error responses are sanitized — no stack traces, no secret values, no internal state leaks. The model allowlist prevents prompt injection from swapping in unauthorized models. Every failure mode (AI timeout, invalid input, auth failure, KV degradation) returns a structured MCP error response.
+
+## Testing & Observability
+
+The test suite has 108 cases across 8 suites covering auth flows, all 12 tool handlers, input validation, model routing, rate limiting, error sanitization, observability, and logging — all with mocked AI calls so tests are fast and free. Statement coverage sits at 95.5%.
+
+Structured JSON logging tracks three categories: `tool_invocation` (tool name, tier, model, latency in ms), `tool_error` (error type, input size, no secrets), and `auth_event` (attempt, success, failure, rate_limit with IP tracking). Everything surfaces through `wrangler tail` and Cloudflare Workers analytics.
+
+## Architecture
+
+The entire server is a single 760-line TypeScript file — intentionally. One file means one place to audit, one module to understand, one thing to deploy. A new MCP server instance is created per request (required by MCP SDK 1.26.0's CVE fix), keeping the server stateless. No Durable Objects, no session persistence, no state management complexity.
+
+The deploy script auto-creates KV namespaces if they're missing and is idempotent — safe to run repeatedly. Registration works with Claude Code CLI, Claude Desktop, or manual `settings.json` configuration.
+
+## Outcomes
+
+- **12 MCP tools** routing mechanical code tasks away from expensive Claude inference
+- **Two-tier model system** matching task complexity to model capability, configurable at runtime without redeploy
+- **OAuth 2.1 auth** with rate limiting, CSRF protection, and timing-safe comparison
+- **108 tests at 95.5% coverage** with zero external service dependencies
+- **Structured observability** tracking tool latency, errors, and auth events
+- **760-line single-file server** — auditable, deployable, and maintainable
+- **Self-healing configuration** — invalid KV entries auto-revert to safe defaults
