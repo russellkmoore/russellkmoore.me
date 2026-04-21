@@ -1,31 +1,72 @@
 ---
 title: "The Invest Collective"
-description: "Trading group platform with member management, research library with PDF uploads, market tracking tools, and analytics dashboards — secured with Cloudflare Zero Trust."
-stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare Access", "shadcn/ui", "Drizzle ORM"]
-status: "In Development"
-featured: false
-url: https://staging.theinvestcollective.com
+description: "Members-only platform for a private trading group — public Thesis Tracker that scores AI-assisted investment predictions nightly, AI-assisted research library, analytics dashboard, and Zero Trust admin — all running on Cloudflare at effectively $0/month."
+stack: ["Next.js 15", "Cloudflare Workers", "D1", "R2", "Cloudflare Access", "Workers AI", "MCP", "Claude", "Drizzle ORM", "shadcn/ui"]
+status: "Live"
+url: "https://theinvestcollective.com"
+featured: true
 order: 3
 ---
 
 ## Overview
 
-The Invest Collective is a comprehensive web platform for a private trading group, replacing a scattered mix of Discord channels, Google Docs, and spreadsheets with a purpose-built application. Members can access a curated research library, track market theses, and monitor macro cycle indicators -- all behind Cloudflare Zero Trust authentication.
+The Invest Collective is a members-only website for a private investing group, replacing a scattered mix of Discord channels, Google Docs, and spreadsheets with a single purpose-built platform. The MVP ships with four working systems — a homepage and application flow, an AI-assisted research library with PDF support, a public Thesis Tracker that scores measurable investment predictions, and an analytics dashboard — all deployed to a single Cloudflare Worker with a SQLite database at the edge.
 
-The platform is designed for a specific community's workflow: research articles are published by senior members with PDF attachments and topic-based filtering. Market tracking tools like thesis trackers, cycle navigators, and regime trackers give members a shared view of the group's investment framework. An admin dashboard provides geographic, traffic, content, and time-based analytics.
+The product half is a workbench for a small group of serious investors. The engineering half is a deliberate bet on how far you can get with one deploy target, one database, and an AI workflow that replaces what would traditionally be a $500–$5,000/month market-data pipeline. The answer, at this scale, is: all the way to a live product, with a monthly bill rounded to zero.
+
+I led the build as program lead — architecture, data model, API design, the MCP + Cowork automation, and the rollout to production.
+
+## Thesis Tracker: the differentiator
+
+Most investing communities loudly celebrate the calls they got right and quietly forget the ones they didn't. The Thesis Tracker forces a different habit. Every thesis is a specific, testable prediction with a bounded timeframe (30–365 days), 2–8 measurable data points with target values and directions, and a public outcome score when it closes. The current dashboard shows both wins and losses because that's the point — the group's track record is only credible if you publish the misses.
+
+Each thesis has a confidence score (data points met or on-track, recalculated on every update) and an outcome score (data points fully met at close — stricter, permanent). Results are public on `/thesis-tracker`.
+
+### The AI workflow
+
+A small MCP server (~600 lines of TypeScript, stateless, just an HTTPS client to our production API) gives Claude a set of tools to draft and update theses: `search_financial_news`, `submit_thesis`, `get_thesis`, `update_data_point`, `list_theses`. Every tool call is Zod-validated and writes through the same API that humans use — the API owns truth and validation; the AI is a draftsman, not an oracle.
+
+Two loops run on top of it:
+
+**Ad-hoc generation** — In Claude Desktop, an admin prompts for a new thesis (optionally scoped to a topic like Fed policy). Claude searches recent financial news, drafts a testable hypothesis with category, timeframe, and 2–8 data points, a human reviews and edits it, and only then does the MCP server POST to `/api/v1/theses`.
+
+**Nightly review** — A Cowork scheduled task (running on Anthropic's cloud, not on anyone's laptop) walks every active thesis after market close. Claude Sonnet fetches the current value for each data point from Yahoo Finance, FRED, and MarketWatch, updates the database through the API, recomputes the confidence score, and closes any thesis whose end date has passed. The job is idempotent, safe to re-run, and skips data points it can't verify rather than guessing.
+
+Because the MCP server is a stateless HTTPS client, the scheduler can live anywhere — GitHub Actions, Workers Cron, EventBridge, or any admin's Claude Desktop as a manual fallback. No piece of the platform depends on a specific person being awake.
+
+## Research Library
+
+Admins upload research PDFs through the admin dashboard; files land in R2, metadata in D1, and Workers AI can auto-summarize and auto-tag from a fixed topic vocabulary. Articles are filtered server-side by topic, rendered on demand, and the PDFs stream from R2 through a tracked download endpoint. The public listing is append-only and searchable; drafts stay drafts until published.
+
+## Analytics (with no cookies)
+
+A React `PageViewTracker` fires a lightweight POST on route changes. The Worker reads Cloudflare's `cf-ipcountry` header and the user-agent, parses browser/device/OS at write time, and appends a single row to `analytics_events` — no cookies, no PII, no per-user identifiers. The admin dashboard renders six views (Overview, Geographic, Traffic, Content, Time-of-Day, Export) from 14 aggregated D1 queries batched into one round-trip. Heatmaps show when members actually read; CSV export covers the members list.
+
+## Admin & Auth — zero custom login code
+
+`/admin/*` sits behind Cloudflare Access. We didn't build a login system. Access intercepts every admin request before it touches our code, handles Google/GitHub/OTP identity, and hands the Worker a signed JWT with the user's email. Middleware reads the JWT, sets an app cookie with email and role, and that's it. For a group under 50 users, it's free, and on-call surface drops to zero — there's no password reset flow, no session store, no MFA library to keep current.
+
+API endpoints use a separate Bearer-token scheme (keys managed through the admin UI and revocable at any time), so external systems — including the MCP server running outside our perimeter — can write to the platform without going through the browser auth flow.
 
 ## Tech Stack
 
-- **Next.js 15** -- App Router with server and client components. Server components handle data fetching and rendering for research articles and market trackers. Client components power interactive dashboards and the member application workflow.
-- **Cloudflare Workers** -- Hosts the application at the edge with D1 for relational data and R2 for file storage. API routes handle member management, research CRUD, and analytics aggregation.
-- **D1** -- Stores member profiles, research articles, market tracking data, application submissions, and analytics events. Drizzle ORM provides type-safe queries with automatic migration management.
-- **R2** -- Object storage for PDF research documents and member-uploaded files. Direct upload from the client with server-signed URLs.
-- **Cloudflare Access** -- Zero Trust authentication gates the entire platform. Members authenticate through Cloudflare's identity layer, and role-based access controls manage admin vs. member permissions.
-- **shadcn/ui** -- Consistent component library across the member portal and admin dashboard. Data tables, forms, and chart components provide a polished interface.
+- **Next.js 15** — App Router running on Cloudflare Workers via `@opennextjs/cloudflare`. Server components for public pages and admin views; client components for interactive forms, filters, and dashboards.
+- **Cloudflare Workers** — One deploy target for the entire platform. API routes, page rendering, analytics ingestion, and AI calls all run at the edge.
+- **D1** — SQLite at the edge for members, articles, theses, thesis data points, data-point history, updates, analytics events, API keys, and legal pages. Drizzle ORM + Zod enforce the schema on every write.
+- **R2** — PDF storage for research articles. Uploaded through the admin form, streamed back through `/api/v1/research/pdf/[filename]`.
+- **Cloudflare Access** — Zero Trust gate in front of `/admin/*`. Google/GitHub/OTP identity, 24-hour sessions, no custom auth code.
+- **Workers AI** — Optional auto-summary and auto-tagging during article upload.
+- **MCP + Claude** — Stateless MCP server wired to Claude Desktop and Cowork for ad-hoc thesis generation and nightly data review.
+- **Drizzle ORM** — Type-safe migrations and queries against D1; schema is the source of truth.
+- **shadcn/ui + Tailwind CSS v4** — Consistent components across the public site, admin, and dashboards.
 
-## Highlights
+## Outcomes
 
-- **Member application workflow** -- Prospective members submit applications that admins review, approve, or reject with configurable criteria and email notifications
-- **Research library with PDF support** -- Articles with rich text content, attached PDF documents, topic-based filtering, and full-text search across the research archive
-- **Market tracking tools** -- Thesis tracker, cycle navigator, and regime tracker provide shared frameworks for the group's investment analysis
-- **Analytics dashboard** -- Geographic distribution, traffic patterns, content engagement, and time-based usage metrics give admins visibility into platform health
+- **Four working systems in the MVP** — homepage + signup, Thesis Tracker with public scoring, AI-assisted research library, and analytics dashboard
+- **Public accountability engine** — every thesis ships with 2–8 measurable data points, a bounded end date, and a permanent outcome score on close
+- **AI workflow replacing a classical data pipeline** — a ~600-line stateless MCP server plus a Cowork nightly job in place of a $500–$5,000/month market-data + ETL + warehouse stack
+- **Standards-based portability** — ~95% of the code is TypeScript, Next.js, SQL, S3 semantics, OAuth/JWT, and MCP; the Cloudflare-specific surface is a handful of config files and adapter imports
+- **Zero-custom-auth admin** — Cloudflare Access gates `/admin/*`, Bearer tokens gate the API, no password flows to maintain
+- **Privacy-clean analytics** — no cookies, no PII, country derived from Cloudflare edge headers, 14 aggregated queries in a single D1 round-trip
+- **One deploy target, one monthly bill** — the entire platform runs under an existing $5/month Workers plan shared across multiple sites; matching this setup on AWS at equivalent global latency would run ~$360–$700/month across ~15 services
+- **Role on the project** — program lead: architecture, data model, API design, MCP/Cowork workflow, and production rollout for Black Magic Consulting's client
