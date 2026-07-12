@@ -1,0 +1,54 @@
+---
+title: "Claude Design → Cloudflare Starter"
+description: "Open-source template that takes a Claude Design export from artifact to live site in four commands. React 19 + Vite + Tailwind v4, with optional push-to-deploy via GitHub Actions."
+stack: ["React 19", "Vite", "Tailwind CSS v4", "Cloudflare Workers", "GitHub Actions"]
+status: "Live"
+url: "https://github.com/russellkmoore/claude-design-cloudflare-starter"
+github: "https://github.com/russellkmoore/claude-design-cloudflare-starter"
+featured: true
+order: 2
+---
+
+## The Problem
+
+Claude's artifact sandbox is great for designing something quickly, but it has real limits: no localStorage, restricted Tailwind, no real deploy target. When you want to turn that Claude Design mockup into something you can actually send a link to, you're staring at a build-and-deploy problem that has nothing to do with your design.
+
+That setup tax — new Vite project, install Tailwind v4, configure the Cloudflare Workers adapter, wire up GitHub Actions — is annoying to redo from scratch every time, and easy to get subtly wrong (especially Tailwind v4, which dropped the config file entirely in favor of CSS-first setup).
+
+This starter absorbs that tax once, so you don't pay it on every new project.
+
+## How It Works
+
+The entire integration surface is one file: `src/Portfolio.jsx`. You paste your Claude Design component in, keep the `export default`, and the shell is already wired to render it. That's it.
+
+```bash
+./setup.sh my-portfolio   # rename worker + package, install deps, init git
+npm run dev               # preview at localhost:5173
+npm run deploy            # build + deploy → your-name.workers.dev
+```
+
+Three commands from clone to live URL.
+
+What's already handled:
+
+- **Full Tailwind v4** — arbitrary values, custom colors, everything the artifact sandbox restricts. Theme tokens go in `src/index.css` under `@theme { ... }` and work like any utility class.
+- **localStorage / sessionStorage** — no sandbox restrictions in a real deploy.
+- **Cloudflare Workers static asset serving** — `wrangler.jsonc` serves `./dist` with zero configuration needed.
+- **GitHub Actions push-to-deploy** — add two repository secrets and every push to `main` ships automatically. The README includes the exact token scope required (easy to get wrong with the Cloudflare dashboard).
+
+## Design Decisions
+
+**React + Vite over Astro for this template.** Claude Design exports are React components. A React + Vite shell means you drop the component in and it works — no adapter, no framework boundary, no "this is an island" consideration. The goal is zero friction between the design tool and the deploy target.
+
+**Tailwind v4 over v3.** The CSS-first config approach (`@theme` in a CSS file instead of `tailwind.config.js`) eliminates the most common class-not-applying confusion. v4's arbitrary value support is also more complete, which matters when Claude Design generates precise pixel values.
+
+**Single-file setup script over a CLI.** `setup.sh` takes a project name, renames the Worker, installs deps, and optionally commits — 30 lines of bash. A full CLI would be the right call for a more complex template; for this one it's overhead without benefit.
+
+**Plain HTML escape hatch.** If your Claude Design export is a self-contained `.html` file (no React, no build step), the README covers skipping the build entirely: drop it in `public/`, point `wrangler.jsonc` at `./public`, deploy. No build toolchain required.
+
+## Outcomes
+
+- From `git clone` to live Workers URL in under five minutes
+- Template repository on GitHub — "Use this template" creates a fresh copy with clean history
+- Handles the Tailwind v4 setup that trips up most from-scratch projects
+- MIT licensed — use it, fork it, extend it
