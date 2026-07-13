@@ -1,4 +1,4 @@
-Newopen-spurce template this week: Claude Design → Cloudflare Starter.
+New open-spurce template this week: Claude Design → Cloudflare Starter.
 
 Claude's artifact sandbox is great for designing UI fast, but it has real limits — no localStorage, restricted Tailwind, no deploy target. Getting from mockup to a live URL means setting up a build pipeline that has nothing to do with what you built.
 
